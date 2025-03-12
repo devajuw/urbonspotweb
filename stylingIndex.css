@@ -1,0 +1,103 @@
+body,nav {
+    margin: 0;
+    padding:0;
+}
+nav {
+    display: flex-end;
+    padding: 10px;
+    background-color: #fffade;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+}
+
+.nav {
+    display: flex;
+    justify-content: flex-end;
+   
+}
+
+.nav ul {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav li {
+    margin-left: 20px;
+}
+
+.nav a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 560;
+    opacity: 0.8;
+    font-family: 'Inter', sans-serif;
+}
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #bad4c0;
+}
+
+/* Styling Of Boxes here */
+
+body .box1{
+    border: 2px solid #0098d8;
+    border-radius: 1px ;
+    border-radius: 2%; 
+    font-size: 70px;
+    font-family: 'Inter', sans-serif;
+    width: 482px; 
+    height: 452px; 
+    background-color: #CBFAE7;
+    position: absolute;
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between;
+    align-items: center;
+    left: 30px;
+    top: 150px;
+    padding: 20px; 
+}
+
+.pinkButton {
+    background-color: #d9d9d9;
+    border: none;
+    padding: 20px 40px;
+    width: fit-content;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    color: #000;
+    transition: background-color 0.4s ease;
+    align-self: center; 
+    margin-top: auto; 
+    border: 2px solid purple;
+}
+
+.pinkButton:hover {
+    background-color: #d5ade4;
+}
+/* Styling of 2nd box */
+ .box2{
+    border: 2px solid #7e44db;
+    border-radius: 1px ;
+    border-radius: 2%; 
+    font-size: 70px;
+    font-family: 'Inter', sans-serif;
+    width: 782px; 
+    height: 452px; 
+    background-color: #d9d9d9;
+    
+    position: absolute;
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between;
+    align-items: center;
+    right: 30px;
+    top: 150px;
+    padding: 20px; 
+}
