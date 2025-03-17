@@ -5,29 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UrbonSpot 💜 </title>
     <link rel="stylesheet" href="stylingIndex.css">
+    <style>
+        .nav {
+            padding: 5px 0;
+            box-sizing: border-box;
+        }
+
+        .nav ul li a {
+            display: inline-block;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            box-sizing: border-box;
+            padding: 5px;
+        }
+
+        .nav ul li a:hover {
+            color: #000;
+            background-color: #ffeb3b;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <nav class="nav">
         <ul>
-        
             <li><a href="AppLink">Get The App</a></li>
             <li><a href="AboutUs.html">About Us</a></li>
             <li><a href="login.html">Login / Signup</a></li>
-          </ul>
-        </nav>
-        <!-- 1st rect -->
-        <div class="body">
-            <div class="box1">
-                Want to <br>rent your<br>Parking<br> Spot ?? <br>
-                <button class="pinkButton" role="button">Become a Renter</button>
-            </div>
-            <!-- 2nd rect -->
-            <div class="box2">
-                
-                <button class="hourly" role="button">HOURLY/DAILY</button>
-                <button class="weekly" role="button">WEEKLY</button>
-               
-
+        </ul>
+    </nav>
+    <div class="body">
+        <div class="box1">
+            Want to <br>rent your<br>Parking<br> Spot ?? <br>
+            <button class="pinkButton" role="button" onclick="location.href='renter.html'">Become a Renter</button>
         </div>
+        <div class="box2">
+            <button class="hourly" role="button">HOURLY/DAILY</button>
+            <button class="weekly" role="button">WEEKLY</button>
+        </div>
+    </div>
 </body>
 </html>

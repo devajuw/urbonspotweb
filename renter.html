@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Parking Rent</title>
+    <link rel="stylesheet" href="stylingrenter.css">
+</head>
+<body>
+    <h1>List Your Car for Parking Rent</h1>
+    <form action="/submit-parking" method="POST">
+        <label for="carModel">Car Model:</label>
+        <input type="text" id="carModel" name="carModel" required>
+        <br>
+        <label for="licensePlate">License Plate:</label>
+        <input type="text" id="licensePlate" name="licensePlate" required>
+        <br>
+        <label for="parkingLocation">Parking Location:</label>
+        <input type="text" id="parkingLocation" name="parkingLocation" required>
+        <br>
+        <label for="rentPrice">Rent Price (per hour):</label>
+        <input type="number" id="rentPrice" name="rentPrice" required>
+        <br>
+        <label for="availability">Availability:</label>
+        <input type="date" id="availability" name="availability" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
