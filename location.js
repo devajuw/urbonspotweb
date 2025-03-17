@@ -15,16 +15,16 @@ function initMap() {
 function spawnMarkers() {
     // Store 10 markers with their locations and labels
     const markerLocations = [
-        { lat: 28.6139, lng: 77.2090, label: "Marker 1" }, // New Delhi
-        { lat: 19.0760, lng: 72.8777, label: "Marker 2" }, // Mumbai
-        { lat: 12.9716, lng: 77.5946, label: "Marker 3" }, // Bangalore
-        { lat: 22.5726, lng: 88.3639, label: "Marker 4" }, // Kolkata
-        { lat: 13.0827, lng: 80.2707, label: "Marker 5" }, // Chennai
-        { lat: 23.2599, lng: 77.4126, label: "Marker 6" }, // Bhopal
-        { lat: 17.3850, lng: 78.4867, label: "Marker 7" }, // Hyderabad
-        { lat: 25.5941, lng: 85.1376, label: "Marker 8" }, // Patna
-        { lat: 31.5497, lng: 74.3436, label: "Marker 9" }, // Lahore
-        { lat: 9.9312, lng: 76.2673, label: "Marker 10" }  // Kochi
+        { lat: 28.6139, lng: 77.2090, label: "Marker 1", name: "New Delhi" }, // New Delhi
+        { lat: 19.0760, lng: 72.8777, label: "Marker 2", name: "Mumbai" }, // Mumbai
+        { lat: 12.9716, lng: 77.5946, label: "Marker 3", name: "Bangalore" }, // Bangalore
+        { lat: 22.5726, lng: 88.3639, label: "Marker 4", name: "Kolkata" }, // Kolkata
+        { lat: 13.0827, lng: 80.2707, label: "Marker 5", name: "Chennai" }, // Chennai
+        { lat: 23.2599, lng: 77.4126, label: "Marker 6", name: "Bhopal" }, // Bhopal
+        { lat: 17.3850, lng: 78.4867, label: "Marker 7", name: "Hyderabad" }, // Hyderabad
+        { lat: 25.5941, lng: 85.1376, label: "Marker 8", name: "Patna" }, // Patna
+        { lat: 31.5497, lng: 74.3436, label: "Marker 9", name: "Lahore" }, // Lahore
+        { lat: 9.9312, lng: 76.2673, label: "Marker 10", name: "Kochi" }  // Kochi
     ];
 
     // Loop through the markerLocations array and place markers on the map
@@ -37,6 +37,12 @@ function spawnMarkers() {
             draggable: false, // Make markers undraggable (fixed in place)
         });
         markers.push(marker); // Store the marker in the markers array
+
+        // Add an event listener to the marker to open marker.html with location details
+        google.maps.event.addListener(marker, 'click', function() {
+            const markerData = markerLocations[i];
+            window.location.href = `marker.html?lat=${markerData.lat}&lng=${markerData.lng}&name=${encodeURIComponent(markerData.name)}`;
+        });
     }
 }
 
@@ -60,7 +66,6 @@ function initMapFromScript(userLocation) {
         draggable: false, // The user's marker is not draggable
     });
  
-    
     // Now spawn the 10 markers after the user location is set
     spawnMarkers();
 }
