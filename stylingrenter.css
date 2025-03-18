@@ -26,7 +26,6 @@ form {
     transition: box-shadow 0.2s ease;
 }
 
-
 label {
     display: block;
     margin-bottom: 8px;
@@ -44,8 +43,6 @@ input {
     background-color: #fcfcfc;
     transition: border-color 0.2s ease;
 }
-
-
 
 button {
     width: 100%;

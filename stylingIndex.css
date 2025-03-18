@@ -7,13 +7,11 @@ nav {
     padding: 10px;
     background-color: #fffade;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
 }
 
 .nav {
     display: flex;
     justify-content: flex-end;
-   
 }
 
 .nav ul {
@@ -42,25 +40,23 @@ nav {
     background-color: #bad4c0;
 }
 
-/* Styling Of Boxes here */
-
 body .box1{
     border: 2px solid #0098d8;
-    border-radius: 1px ;
-    border-radius: 2%; 
+    border-radius: 1px;
+    border-radius: 2%;
     font-size: 70px;
     font-family: 'Inter', sans-serif;
-    width: 482px; 
-    height: 452px; 
+    width: 482px;
+    height: 452px;
     background-color: #CBFAE7;
     position: absolute;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     left: 30px;
     top: 150px;
-    padding: 20px; 
+    padding: 20px;
 }
 
 .pinkButton {
@@ -73,36 +69,33 @@ body .box1{
     border-radius: 5px;
     color: #000;
     transition: background-color 0.4s ease;
-    align-self: center; 
-    margin-top: auto; 
+    align-self: center;
+    margin-top: auto;
     border: 2px solid purple;
 }
 
 .pinkButton:hover {
     background-color: #d5ade4;
 }
-/* Styling of 2nd box */
- .box2{
+
+.box2{
     border: 2px solid #bc14de;
-    border-radius: 1px ;
-    border-radius: 2%; 
+    border-radius: 1px;
+    border-radius: 2%;
     font-size: 70px;
     font-family: 'Inter', sans-serif;
-    width: 782px; 
-    height: 452px; 
+    width: 782px;
+    height: 452px;
     background-color: #d9d9d9;
-    
     position: absolute;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     right: 30px;
     top: 150px;
-    padding: 20px; 
-    
-/* styling of box 2 buttons */
-
+    padding: 20px;
+}
 
 .hourly , .weekly{
     background-color: #CCBEE7;
@@ -113,12 +106,12 @@ body .box1{
     border-radius: 1px;
     color: #000;
     transition: background-color 0.4s ease;
-    align-self: center; 
-    margin-top: auto; 
+    align-self: center;
+    margin-top: auto;
     border: 2px solid rgb(0, 0, 0);
 }
 
-.time , .wherePark{
+.date , .wherePark{
     background-color: #e7afaf;
     border: none;
     padding: 10px 50px;
@@ -127,7 +120,51 @@ body .box1{
     border-radius: 8px;
     color: #000;
     transition: background-color 0.4s ease;
-    align-self: center; 
-    margin-top: auto; 
+    align-self: center;
+    margin-top: auto;
     border: 2px solid rgb(0, 0, 0);
+}
+
+.date {
+    background-color: #e7afaf;
+    border: 2px solid rgb(0, 0, 0);
+    padding: 10px 50px;
+    width: 550px;
+    font-size: 14px;
+    border-radius: 8px;
+    color: #000;
+    transition: background-color 0.4s ease;
+    align-self: center;
+    margin-top: auto;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 130px;
+}
+
+.date:hover, .wherePark:hover{
+    background-color: #e65d5d;
+}
+
+.weekly:hover,.hourly:hover {
+    background-color: #8946db;
+}
+
+.FindParking{
+    background-color: #f5eda3;
+    border: 2px solid rgb(0, 0, 0);
+    padding: 10px 50px;
+    width: fit-content;
+    font-size: 14px;
+    border-radius: 8px;
+    color: #000;
+    transition: background-color 0.4s ease, transform 0.2s ease;
+    align-self: center;
+    margin-top: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.FindParking:hover {
+    background-color: #e9e517;
+    transform: scale(1.05);
 }
