@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+        /* Background Container */
+        .background {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background: url('bg-login.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -1;
+        }
+        /* Adding Opacity Using an Overlay */
+        .background::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Adjust opacity (0.5 = 50% opaque) */
+            z-index: -1;
+        }
+        .login-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        input {
+            width: 96%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 96%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .switch {
+            margin-top: 10px;
+            color: #007bff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Image -->
+    <div class="background"></div>
+
+    <div class="login-container">
+        <h2 id="form-title">Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="handleAction()" id="action-btn">Login</button>
+        <p class="switch" onclick="toggleForm()" id="toggle-text">Don't have an account? Register</p>
+    </div>
+
+    <script>
+        let isLogin = true;
+
+        function getUsers() {
+            return JSON.parse(localStorage.getItem("users")) || { "Admin": "888888" };
+        }
+
+        function setUsers(users) {
+            localStorage.setItem("users", JSON.stringify(users));
+        }
+
+        function handleAction() {
+            let user = document.getElementById("username").value;
+            let pass = document.getElementById("password").value;
+            let users = getUsers();
+            
+            if (isLogin) {
+                if (users[user] && users[user] === pass) {
+                    alert("Login Successful!");
+                    window.location.href = "dashboard.html";
+                } else {
+                    alert("Invalid username or password");
+                }
+            } else {
+                if (users[user]) {
+                    alert("Username already exists");
+                } else {
+                    users[user] = pass;
+                    setUsers(users);
+                    alert("Registration Successful! You can now log in.");
+                    toggleForm();
+                }
+            }
+        }
+
+        function toggleForm() {
+            isLogin = !isLogin;
+            document.getElementById("form-title").textContent = isLogin ? "Login" : "Register";
+            document.getElementById("action-btn").textContent = isLogin ? "Login" : "Register";
+            document.getElementById("toggle-text").textContent = isLogin ? "Don't have an account? Register" : "Already have an account? Login";
+        }
+    </script>
+</body>
+</html>
