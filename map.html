@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Location with Marker</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Google Maps API loaded in location.js -->
-    <script src="location.js" defer></script> <!-- Loading location.js that will also load Google Maps API -->
-    <script src="script.js" defer></script> <!-- Loading your script.js -->
+    <script src="location.js" defer></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -17,7 +16,12 @@
             <div id="output"></div>
             <div id="map"></div>
         </div>
-        
+
+        <div class="range-section">
+            <label for="range-slider">Range: <span id="range-value">0</span> km</label>
+            <input type="range" id="range-slider" min="0" max="20" value="0">
+            <button id="reset-range">Reset</button>
+        </div>
     </div>
 </body>
 </html>
