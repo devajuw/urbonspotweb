@@ -63,27 +63,6 @@ body {
     display: none;
 }
 
-.info-section {
-    display: none;
-}
-
-#lock-button {
-    position: absolute;
-    padding: 10px 15px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: none;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-#lock-button:hover {
-    background-color: #d32f2f;
-    transform: translateY(-3px);
-}
-
 h1 {
     font-size: 36px;
     color: #333;
@@ -96,4 +75,42 @@ p {
     color: #555;
     line-height: 1.5;
     margin-top: 10px;
+}
+
+.range-section {
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto 0 auto;
+    background-color: #f9f9f9;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    text-align: center;
+}
+
+#range-slider {
+    width: 80%;
+    margin-top: 10px;
+}
+
+
+/* Redesigned Reset Button */
+#reset-range {
+    margin-top: 15px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #ff4e50, #f9d423);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#reset-range:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
