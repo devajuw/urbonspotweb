@@ -1,54 +1,495 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marker Details</title>
+    <title>Parking Space Details</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .main-container {
+            display: flex;
+            width: 90%;
+            margin: 30px;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        
+        .left-section {
+            flex: 3;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .map-container {
+            flex: 1;
+            height: 400px;
+        }
+        
+        .info-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #location-name {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        #location-description {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        
+        .slideshow-container {
+            position: relative;
+            height: 250px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        #slideshow {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            object-fit: cover;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide-controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+        
+        .slide-btn {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: background-color 0.2s;
+        }
+        
+        .slide-btn:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .slide-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .slide-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .slide-dot.active {
+            background-color: #1e3a8a;
+        }
+        
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #1e3a8a;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .back-button:hover {
+            background-color: #152a60;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        
+        #map {
+            height: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Booking form on right side */
+        .right-section {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+        }
+        
+        .booking-title {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .booking-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .booking-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .booking-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .booking-table td:first-child {
+            font-weight: 600;
+            width: 40%;
+            color: #555;
+        }
+        
+        .booking-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .booking-input:focus {
+            border-color: #1e3a8a;
+            outline: none;
+        }
+        
+        .fare-estimate-row {
+            background-color: #f0f5ff;
+            border-radius: 6px;
+        }
+        
+        .fare-amount {
+            font-weight: 700;
+            color: #1e3a8a;
+            font-size: 18px;
+        }
+        
+        .book-button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #1e3a8a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .book-button:hover {
+            background-color: #152a60;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        
+        .fare-details {
+            background-color: #f0f5ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .fare-details h4 {
+            margin-top: 0;
+            color: #1e3a8a;
+            margin-bottom: 12px;
+        }
+        
+        .fare-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .total-fare {
+            border-top: 1px dashed #1e3a8a;
+            margin-top: 8px;
+            padding-top: 8px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Marker Details</h1>
-    <p id="location"></p>
-    <div id="map" style="height: 400px; width: 100%;"></div> <!-- Map container -->
+    <div class="main-container">
+        <!-- Left section with map and info -->
+        <div class="left-section">
+            <h2 id="location-name"></h2>
+            <div class="content-wrapper">
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+                <div class="info-container">
+                    <p id="location-description"></p>
+                    <div class="slideshow-container">
+                        <div id="slideshow"></div>
+                        <div class="slide-controls">
+                            <button class="slide-btn prev-btn">❮</button>
+                            <button class="slide-btn next-btn">❯</button>
+                        </div>
+                    </div>
+                    <div class="slide-nav" id="slide-nav"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right section with booking form -->
+        <div class="right-section">
+            <h3 class="booking-title">Parking Reservation</h3>
+            <table class="booking-table">
+                <tr>
+                    <td>Date:</td>
+                    <td><input type="date" id="booking-date" class="booking-input"></td>
+                </tr>
+                <tr>
+                    <td>Hour:</td>
+                    <td>
+                        <select id="booking-hour" class="booking-input">
+                            <option value="">Select time</option>
+                            <option value="08:00">08:00 AM</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">01:00 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                            <option value="17:00">05:00 PM</option>
+                            <option value="18:00">06:00 PM</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Duration:</td>
+                    <td>
+                        <select id="booking-duration" class="booking-input" onchange="parkingFare.updateFareEstimate()">
+                            <option value="1">1 hour</option>
+                            <option value="2">2 hours</option>
+                            <option value="3">3 hours</option>
+                            <option value="4">4 hours</option>
+                            <option value="5">5 hours</option>
+                            <option value="6">6 hours</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Vehicle Number:</td>
+                    <td><input type="text" id="vehicle-number" class="booking-input" placeholder="Enter vehicle number"></td>
+                </tr>
+                <tr class="fare-estimate-row">
+                    <td>Estimated Fare:</td>
+                    <td><span class="fare-amount" id="fare-estimate">₹60</span></td>
+                </tr>
+            </table>
+            
+            <div class="fare-details">
+                <h4>Fare Breakdown</h4>
+                <div class="fare-item">
+                    <span>Base Price:</span>
+                    <span>₹50</span>
+                </div>
+                <div class="fare-item">
+                    <span>Hourly Rate:</span>
+                    <span>₹10 per hour</span>
+                </div>
+                <div class="fare-item">
+                    <span>Late Fee:</span>
+                    <span>₹25 per 15 min</span>
+                </div>
+                <div class="fare-item total-fare">
+                    <span>Total Estimate:</span>
+                    <span id="total-fare-estimate">₹60</span>
+                </div>
+            </div>
+            
+            <button class="book-button">Book Parking</button>
+        </div>
+    </div>
+    
+    <!-- Back button positioned in the bottom left corner -->
+    <a href="map.html" class="back-button">← Back to Map</a>
 
+    <script src="fare.js"></script>
     <script>
-        // Get the query parameters from the URL
+        // Get location parameters from URL
         const urlParams = new URLSearchParams(window.location.search);
         const lat = parseFloat(urlParams.get('lat'));
         const lng = parseFloat(urlParams.get('lng'));
-        const name = urlParams.get('name');
-
-        // Display the location details
-        document.getElementById('location').textContent = `Name: ${name}, Latitude: ${lat}, Longitude: ${lng}`;
-
-        // Initialize the map with the marker location
+        const name = decodeURIComponent(urlParams.get('name'));
+        
+        let slideIndex = 0;
+        let slides = [];
+        
+        // Set default date to today
+        const today = new Date();
+        document.getElementById('booking-date').valueAsDate = today;
+        
+        // Fetch marker data and populate page
+        fetch('markerdata.json')
+            .then(response => response.json())
+            .then(data => {
+                // Find location data by name
+                const locationData = data.find(item => item.name === name);
+                if (locationData) {
+                    document.getElementById('location-name').textContent = locationData.name;
+                    document.getElementById('location-description').textContent = locationData.description;
+                    
+                    // Create slideshow
+                    const slideshow = document.getElementById('slideshow');
+                    const slideNav = document.getElementById('slide-nav');
+                    
+                    locationData.images.forEach((imageUrl, index) => {
+                        // Create image element
+                        const slide = document.createElement('img');
+                        slide.src = imageUrl;
+                        slide.className = index === 0 ? 'slide active' : 'slide';
+                        slideshow.appendChild(slide);
+                        slides.push(slide);
+                        
+                        // Create navigation dot
+                        const dot = document.createElement('div');
+                        dot.className = index === 0 ? 'slide-dot active' : 'slide-dot';
+                        dot.addEventListener('click', () => {
+                            showSlide(index);
+                        });
+                        slideNav.appendChild(dot);
+                    });
+                    
+                    // Add slide navigation
+                    document.querySelector('.prev-btn').addEventListener('click', () => {
+                        showSlide(slideIndex - 1);
+                    });
+                    
+                    document.querySelector('.next-btn').addEventListener('click', () => {
+                        showSlide(slideIndex + 1);
+                    });
+                    
+                    // Start automatic slideshow
+                    setInterval(() => {
+                        showSlide(slideIndex + 1);
+                    }, 3000);
+                }
+            });
+        
+        // Function to show a specific slide
+        function showSlide(index) {
+            if (slides.length === 0) return;
+            
+            if (index >= slides.length) {
+                index = 0;
+            } else if (index < 0) {
+                index = slides.length - 1;
+            }
+            
+            const dots = document.querySelectorAll('.slide-dot');
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                dots[i].classList.remove('active');
+            });
+            
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            
+            slideIndex = index;
+        }
+        
+        // Initialize the map
         function initMap() {
-            // Create a map centered on the marker's location
-            const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 14,
-                center: { lat: lat, lng: lng },
-                mapTypeId: "terrain",
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: { lat, lng },
+                mapTypeId: 'terrain'
             });
-
-            // Add a marker at the location
+            
             new google.maps.Marker({
-                position: { lat: lat, lng: lng },
+                position: { lat, lng },
                 map: map,
-                title: name, // Title of the marker
-                animation: google.maps.Animation.DROP, // Drop animation
+                title: name
             });
         }
-
-        // Load the Google Maps API dynamically
-        function loadGoogleMaps() {
-            const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&callback=initMap`; // Replace YOUR_API_KEY with your actual Google Maps API key
-            script.defer = true;
-            script.async = true;
-            document.head.appendChild(script);
-        }
-
-        // Call loadGoogleMaps to initiate the API loading
-        loadGoogleMaps();
+        
+        // Update fare when page loads
+        window.onload = function() {
+            if (parkingFare && typeof parkingFare.updateFareEstimate === 'function') {
+                parkingFare.updateFareEstimate();
+            }
+        };
     </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&callback=initMap" async defer></script>
 </body>
 </html>
