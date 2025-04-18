@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanSpot - Payment</title>
+    <link rel="stylesheet" href="styl.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        .payment-details {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 500px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .total-row {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2e7d32;
+        }
+        .back-to-map {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #4285F4;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+        .back-to-map:hover {
+            background-color: #3367d6;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>UrbanSpot</h1>
+            <nav>
+                <ul>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="payment-section">
+            <a href="marker.html" class="back-to-map">← Back to Map/Directions</a>
+            <h2>Complete Your Parking Reservation</h2>
+            
+            <div class="payment-details" id="payment-details">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+            
+            <button id="pay-button">Proceed to Payment</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 UrbanSpot. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bookingData = JSON.parse(sessionStorage.getItem('pendingBooking'));
+            const paymentDetails = document.getElementById('payment-details');
+            
+            if (bookingData) {
+                const totalAmount = bookingData.fare || 1;
+                
+                paymentDetails.innerHTML = `
+                    <div class="detail-row">
+                        <span>Parking Location:</span>
+                        <span>${bookingData.location || 'Not specified'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Date & Time:</span>
+                        <span>${bookingData.date || ''} at ${bookingData.time || ''}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Vehicle Number:</span>
+                        <span>${bookingData.vehicle || 'Not specified'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Duration:</span>
+                        <span>${bookingData.duration || 1} hour(s)</span>
+                    </div>
+                    <div class="detail-row total-row">
+                        <span>Total Amount:</span>
+                        <span id="total-amount">₹${totalAmount}</span>
+                    </div>
+                `;
+                
+                document.getElementById('pay-button').textContent = `Pay ₹${totalAmount}`;
+            } else {
+                paymentDetails.innerHTML = `
+                    <div class="detail-row total-row">
+                        <span>Total Amount:</span>
+                        <span>₹1</span>
+                    </div>
+                `;
+            }
+        });
+
+        document.getElementById('pay-button').onclick = function(e) {
+            const bookingData = JSON.parse(sessionStorage.getItem('pendingBooking'));
+            const amount = (bookingData?.fare || 1) * 100;
+            
+            var options = {
+                "key": "rzp_live_fZqJYl2cPlP44W",
+                "amount": amount,
+                "currency": "INR",
+                "name": "UrbanSpot",
+                "description": "Parking Reservation",
+                "image": "https://example.com/your_logo.jpg",
+                "order_id": "",
+                "handler": function(response) {
+                    const successMessage = `
+                        Payment Successful!
+                        Payment ID: ${response.razorpay_payment_id}
+                        Amount: ₹${amount/100}
+                        Location: ${bookingData?.location || 'N/A'}
+                    `;
+                    alert(successMessage);
+                },
+                "prefill": {
+                    "name": "Customer Name",
+                    "email": "customer@example.com",
+                    "contact": "9999999999"
+                },
+                "theme": {
+                    "color": "#F37254"
+                }
+            };
+            
+            var rzp1 = new Razorpay(options);
+            rzp1.on('payment.failed', function(response) {
+                alert(`Payment Failed: ${response.error.description}`);
+            });
+            rzp1.open();
+            e.preventDefault();
+        };
+    </script>
+</body>
+</html>
