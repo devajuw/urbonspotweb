@@ -25,6 +25,22 @@
             color: white;
             font-weight: bold;
         }
+        .pay-now-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 15px auto;
+    display: block;
+    width: fit-content;
+    transition: background 0.3s;
+}
+.pay-now-btn:hover {
+    background: #45a049;
+}
     </style>
 </head>
 <body>
@@ -120,5 +136,7 @@
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&callback=initMap&libraries=places">
     </script>
+    <div id="directions-panel"></div>
+    <button class="pay-now-btn" onclick="window.location.href='spot.html'">Pay Now</button>
 </body>
 </html>
