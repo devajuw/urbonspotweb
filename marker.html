@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parking Space Details</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,13 +18,15 @@
         .main-container {
             display: flex;
             width: 90%;
-            margin: 30px;
+            margin: 30px auto;
             gap: 30px;
             align-items: flex-start;
+            flex-wrap: wrap;
         }
         
         .left-section {
             flex: 3;
+            min-width: 300px;
             background-color: #fff;
             border-radius: 12px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
@@ -32,15 +36,18 @@
         .content-wrapper {
             display: flex;
             gap: 20px;
+            flex-wrap: wrap;
         }
         
         .map-container {
             flex: 1;
+            min-width: 300px;
             height: 400px;
         }
         
         .info-container {
             flex: 1;
+            min-width: 300px;
             display: flex;
             flex-direction: column;
         }
@@ -169,9 +176,9 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
-        /* Booking form on right side */
         .right-section {
             flex: 1;
+            min-width: 300px;
             background-color: #fff;
             border-radius: 12px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
@@ -233,29 +240,6 @@
             font-size: 18px;
         }
         
-        .book-button {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background-color: #1e3a8a;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .book-button:hover {
-            background-color: #152a60;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-        }
-        
         .fare-details {
             background-color: #f0f5ff;
             border-radius: 8px;
@@ -281,6 +265,53 @@
             padding-top: 8px;
             font-weight: 700;
             font-size: 18px;
+        }
+        
+        .vehicle-type-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 15px;
+        }
+        
+        .book-button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .directions-btn {
+            background-color: #4285F4;
+            margin-bottom: 10px;
+        }
+        
+        .directions-btn:hover {
+            background-color: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        
+        .pay-now-btn {
+            background-color: #4CAF50;
+        }
+        
+        .pay-now-btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
         }
     </style>
 </head>
@@ -310,15 +341,22 @@
         <!-- Right section with booking form -->
         <div class="right-section">
             <h3 class="booking-title">Parking Reservation</h3>
+            
+            <select id="vehicle-type" class="vehicle-type-select" onchange="updateFareEstimate()">
+                <option value="2W">🛵 2-Wheeler</option>
+                <option value="4W_Small" selected>🚗 Small Car (e.g., Alto, Swift)</option>
+                <option value="4W_SUV">🚙 SUV/Large Car (e.g., Creta, Fortuner)</option>
+            </select>
+            
             <table class="booking-table">
                 <tr>
                     <td>Date:</td>
-                    <td><input type="date" id="booking-date" class="booking-input"></td>
+                    <td><input type="date" id="booking-date" class="booking-input" required></td>
                 </tr>
                 <tr>
-                    <td>Hour:</td>
+                    <td>Time:</td>
                     <td>
-                        <select id="booking-hour" class="booking-input">
+                        <select id="booking-hour" class="booking-input" required>
                             <option value="">Select time</option>
                             <option value="08:00">08:00 AM</option>
                             <option value="09:00">09:00 AM</option>
@@ -337,7 +375,7 @@
                 <tr>
                     <td>Duration:</td>
                     <td>
-                        <select id="booking-duration" class="booking-input" onchange="parkingFare.updateFareEstimate()">
+                        <select id="booking-duration" class="booking-input" onchange="updateFareEstimate()" required>
                             <option value="1">1 hour</option>
                             <option value="2">2 hours</option>
                             <option value="3">3 hours</option>
@@ -349,7 +387,7 @@
                 </tr>
                 <tr>
                     <td>Vehicle Number:</td>
-                    <td><input type="text" id="vehicle-number" class="booking-input" placeholder="Enter vehicle number"></td>
+                    <td><input type="text" id="vehicle-number" class="booking-input" placeholder="DL 01 AB 1234" required></td>
                 </tr>
                 <tr class="fare-estimate-row">
                     <td>Estimated Fare:</td>
@@ -361,11 +399,11 @@
                 <h4>Fare Breakdown</h4>
                 <div class="fare-item">
                     <span>Base Price:</span>
-                    <span>₹50</span>
+                    <span id="base-price">₹20</span>
                 </div>
                 <div class="fare-item">
                     <span>Hourly Rate:</span>
-                    <span>₹10 per hour</span>
+                    <span id="hourly-rate">₹10 per hour</span>
                 </div>
                 <div class="fare-item">
                     <span>Late Fee:</span>
@@ -377,85 +415,105 @@
                 </div>
             </div>
             
-            <button class="book-button" onclick="window.location.href='direction.html';">Book Parking</button>
-
+            <button class="book-button directions-btn" onclick="openGoogleMaps()">
+                🗺️ Get Directions
+            </button>
+            
+            <button class="book-button pay-now-btn" onclick="processPayment()">
+                💳 Pay Now
+            </button>
         </div>
     </div>
     
     <!-- Back button positioned in the bottom left corner -->
     <a href="map.html" class="back-button">← Back to Map</a>
 
-    <script src="fare.js"></script>
     <script>
         // Get location parameters from URL
         const urlParams = new URLSearchParams(window.location.search);
         const lat = parseFloat(urlParams.get('lat'));
         const lng = parseFloat(urlParams.get('lng'));
         const name = decodeURIComponent(urlParams.get('name'));
+        const userLat = urlParams.get('userLat');
+        const userLng = urlParams.get('userLng');
         
         let slideIndex = 0;
         let slides = [];
         
+        // Vehicle pricing structure
+        const vehiclePricing = {
+            '2W': { base: 10, hourly: 20 },
+            '4W_Small': { base: 20, hourly: 10 },
+            '4W_SUV': { base: 30, hourly: 15 }
+        };
+
         // Set default date to today
-        const today = new Date();
-        document.getElementById('booking-date').valueAsDate = today;
-        
-        // Fetch marker data and populate page
-        fetch('markerdata.json')
-            .then(response => response.json())
-            .then(data => {
-                // Find location data by name
-                const locationData = data.find(item => item.name === name);
-                if (locationData) {
-                    document.getElementById('location-name').textContent = locationData.name;
-                    document.getElementById('location-description').textContent = locationData.description;
-                    
-                    // Create slideshow
-                    const slideshow = document.getElementById('slideshow');
-                    const slideNav = document.getElementById('slide-nav');
-                    
-                    locationData.images.forEach((imageUrl, index) => {
-                        // Create image element
-                        const slide = document.createElement('img');
-                        slide.src = imageUrl;
-                        slide.className = index === 0 ? 'slide active' : 'slide';
-                        slideshow.appendChild(slide);
-                        slides.push(slide);
-                        
-                        // Create navigation dot
-                        const dot = document.createElement('div');
-                        dot.className = index === 0 ? 'slide-dot active' : 'slide-dot';
-                        dot.addEventListener('click', () => {
-                            showSlide(index);
-                        });
-                        slideNav.appendChild(dot);
-                    });
-                    
-                    // Add slide navigation
-                    document.querySelector('.prev-btn').addEventListener('click', () => {
-                        showSlide(slideIndex - 1);
-                    });
-                    
-                    document.querySelector('.next-btn').addEventListener('click', () => {
-                        showSlide(slideIndex + 1);
-                    });
-                    
-                    // Start automatic slideshow
-                    setInterval(() => {
-                        showSlide(slideIndex + 1);
-                    }, 3000);
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            document.getElementById('booking-date').valueAsDate = today;
+            
+            // Initialize the page
+            initPage();
+        });
+
+        function initPage() {
+            // Set location name
+            document.getElementById('location-name').textContent = name;
+            
+            // Set default description
+            document.getElementById('location-description').textContent = 
+                `This parking location in ${name} offers secure and convenient parking spaces. Our facility features 24/7 surveillance, well-lit areas, and easy access to major attractions. Reserve your spot now for a hassle-free parking experience.`;
+            
+            // Initialize slideshow with placeholder images
+            initSlideshow();
+            
+            // Initialize map
+            initMap();
+            
+            // Initialize fare estimate
+            updateFareEstimate();
+        }
+
+        function initSlideshow() {
+            const slideshow = document.getElementById('slideshow');
+            const slideNav = document.getElementById('slide-nav');
+            
+            // Sample images
+            const sampleImages = [
+                'https://via.placeholder.com/800x400?text=Parking+Facility',
+                'https://via.placeholder.com/800x400?text=Secure+Parking',
+                'https://via.placeholder.com/800x400?text=24/7+Surveillance'
+            ];
+            
+            sampleImages.forEach((imageUrl, index) => {
+                // Create image element
+                const slide = document.createElement('img');
+                slide.src = imageUrl;
+                slide.className = index === 0 ? 'slide active' : 'slide';
+                slide.alt = `Parking location ${index + 1}`;
+                slideshow.appendChild(slide);
+                slides.push(slide);
+                
+                // Create navigation dot
+                const dot = document.createElement('div');
+                dot.className = index === 0 ? 'slide-dot active' : 'slide-dot';
+                dot.addEventListener('click', () => showSlide(index));
+                slideNav.appendChild(dot);
             });
-        
-        // Function to show a specific slide
+            
+            // Add slide navigation
+            document.querySelector('.prev-btn').addEventListener('click', () => showSlide(slideIndex - 1));
+            document.querySelector('.next-btn').addEventListener('click', () => showSlide(slideIndex + 1));
+            
+            // Start automatic slideshow
+            setInterval(() => showSlide(slideIndex + 1), 3000);
+        }
+
         function showSlide(index) {
             if (slides.length === 0) return;
             
-            if (index >= slides.length) {
-                index = 0;
-            } else if (index < 0) {
-                index = slides.length - 1;
-            }
+            if (index >= slides.length) index = 0;
+            else if (index < 0) index = slides.length - 1;
             
             const dots = document.querySelectorAll('.slide-dot');
             slides.forEach((slide, i) => {
@@ -465,31 +523,117 @@
             
             slides[index].classList.add('active');
             dots[index].classList.add('active');
-            
             slideIndex = index;
         }
-        
-        // Initialize the map
+
         function initMap() {
             const map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 12,
+                zoom: 15,
                 center: { lat, lng },
                 mapTypeId: 'terrain'
             });
             
+            // Add parking location marker
             new google.maps.Marker({
                 position: { lat, lng },
                 map: map,
-                title: name
+                title: name,
+                icon: {
+                    url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                    scaledSize: new google.maps.Size(40, 40)
+                }
             });
-        }
-        
-        // Update fare when page loads
-        window.onload = function() {
-            if (parkingFare && typeof parkingFare.updateFareEstimate === 'function') {
-                parkingFare.updateFareEstimate();
+            
+            // Add user location marker if available
+            if (userLat && userLng) {
+                new google.maps.Marker({
+                    position: { lat: parseFloat(userLat), lng: parseFloat(userLng) },
+                    map: map,
+                    title: "Your Location",
+                    icon: {
+                        url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                        scaledSize: new google.maps.Size(40, 40)
+                    }
+                });
+                
+                // Draw a line between user and parking location
+                new google.maps.Polyline({
+                    path: [
+                        { lat: parseFloat(userLat), lng: parseFloat(userLng) },
+                        { lat, lng }
+                    ],
+                    geodesic: true,
+                    strokeColor: '#1e3a8a',
+                    strokeOpacity: 0.7,
+                    strokeWeight: 3,
+                    map: map
+                });
+                
+                // Fit bounds to show both markers
+                const bounds = new google.maps.LatLngBounds();
+                bounds.extend(new google.maps.LatLng(lat, lng));
+                bounds.extend(new google.maps.LatLng(parseFloat(userLat), parseFloat(userLng)));
+                map.fitBounds(bounds);
             }
-        };
+        }
+
+        function updateFareEstimate() {
+            const vehicleType = document.getElementById('vehicle-type').value;
+            const duration = parseInt(document.getElementById('booking-duration').value) || 1;
+            const pricing = vehiclePricing[vehicleType] || vehiclePricing['4W_Small'];
+            
+            const totalFare = pricing.base + (pricing.hourly * duration);
+            
+            // Update displays
+            document.getElementById('base-price').textContent = `₹${pricing.base}`;
+            document.getElementById('hourly-rate').textContent = `₹${pricing.hourly} per hour`;
+            document.getElementById('fare-estimate').textContent = `₹${totalFare}`;
+            document.getElementById('total-fare-estimate').textContent = `₹${totalFare}`;
+        }
+
+        function openGoogleMaps() {
+    if (userLat && userLng) {
+        // Store current URL in sessionStorage before opening maps
+        sessionStorage.setItem('returnUrl', window.location.href);
+        
+        const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${lat},${lng}&travelmode=driving`;
+        window.open(mapsUrl, '_blank');
+    } else {
+        alert('Please get your location first by clicking "Get My Location"');
+    }
+}
+
+        function processPayment() {
+            // Validate form
+            const date = document.getElementById('booking-date').value;
+            const time = document.getElementById('booking-hour').value;
+            const vehicle = document.getElementById('vehicle-number').value;
+            
+            if (!date || !time || !vehicle) {
+                alert('Please fill in all booking details before proceeding.');
+                return;
+            }
+            
+            // Get calculated fare
+            const fare = document.getElementById('fare-estimate').textContent;
+            const numericFare = parseInt(fare.replace('₹', ''));
+            
+            // Store booking data with actual fare
+            const bookingData = {
+                location: name,
+                date,
+                time,
+                vehicle,
+                fare: numericFare,
+                lat,
+                lng,
+                userLat,
+                userLng
+            };
+            
+            sessionStorage.setItem('pendingBooking', JSON.stringify(bookingData));
+            window.location.href = 'spot.html';
+        }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&callback=initMap" async defer></script>
 </body>
