@@ -1,0 +1,101 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+h1 {
+    text-align: center;
+    font-family: 'Georgia', serif;
+    font-size: 2.5em;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #F37254; /* Change color on hover */
+}
+
+.payment-section {
+    background: #fff; /* White background for the payment section */
+    color: #333; /* Dark text for better readability */
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 10px;
+    margin: 50px auto;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.payment-section h2 {
+    margin-bottom: 20px;
+    font-family: 'Georgia', serif;
+    font-size: 2em;
+}
+
+.payment-section p {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+}
+
+button {
+    background: #F37254; /* Primary button color */
+    color: #fff; /* White text */
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s; /* Added transform for button effect */
+}
+
+button:hover {
+    background: #333; /* Darker background on hover */
+    color: #fff; /* Keep text white */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background: #333;
+    color: #fff;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 50px; /* Space above footer */
+}

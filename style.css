@@ -114,3 +114,29 @@ p {
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
+
+/* style.css */
+
+.directions-btn {
+    background: #4285F4;
+    padding: 12px 24px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 20px;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.directions-btn:hover {
+    background: #3367d6;
+    transform: translateY(-2px);
+}
+
+.booking-controls {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    justify-content: center;
+}

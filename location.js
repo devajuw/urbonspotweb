@@ -1,3 +1,4 @@
+// location.js
 let map;
 let markers = [];
 let markerLocations = [];
@@ -11,25 +12,23 @@ function initMap() {
     });
 
     function getDistanceInKm(lat1, lon1, lat2, lon2) {
-        const R = 6371; // Radius of the Earth in km
+        const R = 6371;
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
         const a =
             Math.sin(dLat / 2) * Math.sin(dLat / 2) +
             Math.cos(lat1 * Math.PI / 180) *
-                Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon / 2) *
-                Math.sin(dLon / 2);
+            Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
     }
 
     function spawnMarkers(filteredLocations = []) {
-        // Clear existing markers
         markers.forEach((marker) => marker.setMap(null));
         markers = [];
 
-        // Add new markers
         for (let i = 0; i < filteredLocations.length; i++) {
             const markerData = filteredLocations[i];
             const marker = new google.maps.Marker({
@@ -42,9 +41,12 @@ function initMap() {
 
             markers.push(marker);
 
-            // Add click event listener
             google.maps.event.addListener(marker, "click", function () {
-                window.location.href = `marker.html?lat=${markerData.lat}&lng=${markerData.lng}&name=${encodeURIComponent(markerData.name)}`;
+                let url = `marker.html?lat=${markerData.lat}&lng=${markerData.lng}&name=${encodeURIComponent(markerData.name)}`;
+                if (userLocation) {
+                    url += `&userLat=${userLocation.lat}&userLng=${userLocation.lng}`;
+                }
+                window.location.href = url;
             });
         }
     }
@@ -54,7 +56,6 @@ function initMap() {
         map.setCenter(userLocation);
         map.setZoom(15);
 
-        // Add user location marker
         new google.maps.Marker({
             position: userLocation,
             map: map,
@@ -68,7 +69,6 @@ function initMap() {
             draggable: false,
         });
 
-        // Define marker locations
         markerLocations = [
             { lat: 28.6139, lng: 77.2090, label: "1", name: "New Delhi" },
             { lat: 19.0760, lng: 72.8777, label: "2", name: "Mumbai" },
@@ -82,19 +82,16 @@ function initMap() {
             { lat: 9.9312, lng: 76.2673, label: "10", name: "Kochi" },
         ];
 
-        // Filter markers by range if applicable
-        const filteredMarkers =
-            rangeValue === 0
-                ? markerLocations
-                : markerLocations.filter(
-                      (loc) =>
-                          getDistanceInKm(
-                              userLocation.lat,
-                              userLocation.lng,
-                              loc.lat,
-                              loc.lng
-                          ) <= rangeValue
-                  );
+        const filteredMarkers = rangeValue === 0
+            ? markerLocations
+            : markerLocations.filter(loc =>
+                getDistanceInKm(
+                    userLocation.lat,
+                    userLocation.lng,
+                    loc.lat,
+                    loc.lng
+                ) <= rangeValue
+            );
 
         spawnMarkers(filteredMarkers);
     }
@@ -102,11 +99,9 @@ function initMap() {
     window.initMapFromScript = initMapFromScript;
 }
 
-// Load Google Maps API script dynamically
 function loadGoogleMaps() {
     const script = document.createElement("script");
-    script.src =
-        "https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&callback=initMap";
+    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&callback=initMap";
     script.defer = true;
     script.async = true;
     document.head.appendChild(script);
