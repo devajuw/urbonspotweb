@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="CSS/stylinglogin.css">
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Add Google client ID meta tag -->
+    <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
 </head>
 <body>
     <div class="login-container">
@@ -32,12 +37,142 @@
                     <a href="#" class="forgot-password">Forget Password?</a>
                 </div>
             </form>
-            <button id="google-login" class="google-login-button">
-                <span class="icon">🔗</span>
-                Login with Google
-            </button>
+            
+            <!-- Google Sign-In Button -->
+            <div class="google-signin-container">
+                <button id="google-signin-button" class="google-signin-btn">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+                    <span>Login with Google</span>
+                </button>
+            </div>
         </div>
     </div>
+    
+    <!-- Firebase Configuration and Google Sign-In Script -->
+    <script>
+        // Firebase configuration - replace with your project's config
+        const firebaseConfig = {
+  apiKey: "AIzaSyB5rM-Z_YxL6mpPb5qX3S7A-ykBshAA_Ro",
+  authDomain: "dev-85f8d.firebaseapp.com",
+  projectId: "dev-85f8d",
+  storageBucket: "dev-85f8d.firebasestorage.app",
+  messagingSenderId: "884673937857",
+  appId: "1:884673937857:web:97943fdefae91ccfe36f40",
+  measurementId: "G-4CR2VG9QTK"
+};
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Reference to auth service
+        const auth = firebase.auth();
+        
+        // Google Sign-In Provider
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+        googleProvider.addScope('profile');
+        googleProvider.addScope('email');
+        
+        // Handle Google Sign-In
+        document.getElementById('google-signin-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            auth.signInWithPopup(googleProvider)
+                .then((result) => {
+                    // This gives you a Google Access Token
+                    const credential = result.credential;
+                    const token = credential.accessToken;
+                    
+                    // The signed-in user info
+                    const user = result.user;
+                    console.log("Successfully signed in with Google:", user.displayName);
+                    
+                    // Redirect to dashboard or home page after successful login
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    // Handle Errors here
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    const email = error.email;
+                    const credential = error.credential;
+                    
+                    console.error("Error during Google sign-in:", errorMessage);
+                    alert("Sign-in error: " + errorMessage);
+                });
+        });
+        
+        // Handle regular email/password login
+        document.getElementById('login').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    console.log("Successfully signed in with email:", user.email);
+                    
+                    // Redirect to dashboard or home page after successful login
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    
+                    console.error("Error during email/password sign-in:", errorMessage);
+                    alert("Sign-in error: " + errorMessage);
+                });
+        });
+        
+        // Check if user is already signed in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                console.log("User is already signed in:", user.displayName || user.email);
+                // You can redirect to dashboard here if you want
+                // window.location.href = 'dashboard.html';
+            } else {
+                // User is signed out
+                console.log("No user is signed in");
+            }
+        });
+    </script>
+    
+    <!-- Your existing script reference -->
     <script type="module" src="FireBase/main.js"></script>
+    
+    <style>
+        .google-signin-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .google-signin-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px 15px;
+            background-color: white;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            color: #3c4043;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .google-signin-btn:hover {
+            background-color: #f7f8f8;
+        }
+        
+        .google-signin-btn img {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+        }
+    </style>
 </body>
 </html>
