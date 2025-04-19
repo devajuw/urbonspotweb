@@ -1,0 +1,5 @@
+# Use LF for all files
+* text=auto
+
+# Use CRLF for Windows batch scripts
+*.bat text eol=crlf
