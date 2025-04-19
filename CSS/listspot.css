@@ -1,0 +1,223 @@
+/* listspot.css - Neat, clean styling with a full-page background image */
+
+/* Replace the URL below with your preferred background image */
+html {
+    min-height: 100%;
+    background: url('https://images.pexels.com/photos/1004409/pexels-photo-1004409.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') no-repeat center center fixed;
+    background-size: cover;
+    /* Fallback color while image loads */
+    background-color: #f3f6fa;
+  }
+  
+  /* Container for the form */
+  .form-container {
+    max-width: 430px;
+    margin: 60px auto;
+    background: rgba(255, 255, 255, 0.93);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(60, 60, 90, 0.13);
+    padding: 36px 30px 28px 30px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Form elements */
+  #parkingForm {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  
+  #parkingForm input[type="text"],
+  #parkingForm input[type="number"],
+  #parkingForm input[type="time"],
+  #parkingForm input[type="file"],
+  #parkingForm select,
+  #parkingForm textarea {
+    padding: 10px 12px;
+    border: 1px solid #cfd8dc;
+    border-radius: 7px;
+    font-size: 1rem;
+    background: #f7fafc;
+    transition: border-color 0.2s;
+  }
+  
+  #parkingForm input:focus,
+  #parkingForm select:focus,
+  #parkingForm textarea:focus {
+    border-color: #1976d2;
+    outline: none;
+  }
+  
+  #parkingForm textarea {
+    resize: vertical;
+    min-height: 60px;
+    max-height: 180px;
+  }
+  
+  #parkingForm label {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  #parkingForm button[type="submit"] {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 12px 0;
+    border-radius: 7px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+  }
+  
+  #parkingForm button[type="submit"]:hover,
+  #parkingForm button[type="submit"]:focus {
+    background: #145ea8;
+  }
+  
+  /* Days checkboxes styling */
+  #parkingForm div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    align-items: center;
+  }
+  
+  #parkingForm input[type="checkbox"] {
+    accent-color: #1976d2;
+    margin-right: 5px;
+  }
+  
+  /* Loading overlay */
+  #loading-overlay {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.38);
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #loading-overlay p {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 500;
+    background: rgba(25, 118, 210, 0.85);
+    padding: 22px 36px;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.09);
+  }
+  
+  /* Custom popup styles */
+  #custom-popup.popup-overlay {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    inset: 0;
+    background: rgba(0,0,0,0.32);
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #custom-popup.show {
+    display: flex;
+  }
+  
+  #custom-popup .popup {
+    background: #fff;
+    border-radius: 12px;
+    padding: 34px 30px 22px 30px;
+    box-shadow: 0 8px 32px rgba(60, 60, 90, 0.13);
+    min-width: 320px;
+    max-width: 95vw;
+    position: relative;
+    text-align: center;
+  }
+  
+  #custom-popup .popup.success {
+    border-top: 5px solid #43a047;
+  }
+  #custom-popup .popup.error {
+    border-top: 5px solid #e53935;
+  }
+  
+  #custom-popup .popup-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  #custom-popup .popup-message {
+    font-size: 1rem;
+    margin-bottom: 18px;
+    color: #333;
+  }
+  
+  #custom-popup .popup-button {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 9px 32px;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  #custom-popup .popup-button:hover {
+    background: #145ea8;
+  }
+  
+  #custom-popup .popup-close {
+    position: absolute;
+    top: 11px;
+    right: 13px;
+    font-size: 1.2rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  
+  #custom-popup .popup-close:hover {
+    color: #e53935;
+  }
+  
+  /* Debug panel and status */
+  #debug-panel {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(60,60,90,0.12);
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    z-index: 10001;
+  }
+  
+  #firebase-status,
+  #auth-status,
+  #firestore-status,
+  #storage-status,
+  #form-status {
+    font-size: 0.97rem;
+    margin: 2px 0;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .form-container {
+      padding: 20px 7vw 18px 7vw;
+      margin: 20px 0;
+    }
+    #custom-popup .popup {
+      padding: 18px 7vw 18px 7vw;
+      min-width: unset;
+    }
+  }
+  
