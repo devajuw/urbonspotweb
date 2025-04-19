@@ -7,8 +7,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      background: url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center / cover;
+      background: url('https://images.unsplash.com/photo-1590674899484-d5640e854abe?q=80&w=2667&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center / cover;
     }
+   
     .fade-toggle {
       display: none;
       animation: fadeIn 0.5s ease-in-out;
@@ -20,6 +21,20 @@
   </style>
 </head>
 <body class="min-h-screen flex items-center justify-center px-4 py-10">
+  <!-- Auth UI Container -->
+  <div class="absolute top-4 right-4">
+    <!-- Profile section (visible when logged in) -->
+    <div id="profile" class="flex items-center gap-4 hidden">
+      <img id="profilePic" src="" alt="Profile Picture" class="w-10 h-10 rounded-full border-2 border-white object-cover">
+      <button id="logoutBtn" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">Logout</button>
+    </div>
+    
+    <!-- Login button (visible when not logged in) -->
+    <div id="loginContainer" class="hidden">
+      <button id="loginBtn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">Login</button>
+    </div>
+  </div>
+
   <div class="backdrop-blur-lg bg-white/30 p-8 md:p-12 rounded-2xl shadow-2xl max-w-6xl w-full space-y-10">
 
     <!-- Top Section -->
@@ -27,7 +42,7 @@
       <div class="w-full md:w-1/2 text-center md:text-left">
         <h1 class="text-4xl font-bold text-white mb-4">Got a Parking Spot?</h1>
         <p class="text-white text-lg mb-6">Start earning with it now!</p>
-        <button class="bg-white text-black px-6 py-3 rounded-full font-bold hover:bg-gray-200 transition">List My Spot</button>
+        <button class="bg-white text-black px-6 py-3 rounded-full font-bold hover:bg-gray-200 transition" onclick="window.location.href='listspot.html'">List My Spot</button>
       </div>
       <div class="w-full md:w-1/2 bg-white/90 rounded-xl p-6 shadow-lg">
         <div class="flex justify-center gap-2 mb-4"></div>
@@ -166,9 +181,46 @@
       chart.style.display = chart.style.display === 'none' ? 'block' : 'none';
     }
 
-    // Initialize on page load
+    // Initialize authentication UI on page load
     window.addEventListener('load', () => {
-      document.getElementById('fareChart').style.display = 'none';
+      const profileDiv = document.getElementById('profile');
+      const profilePic = document.getElementById('profilePic');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const loginContainer = document.getElementById('loginContainer');
+      const loginBtn = document.getElementById('loginBtn');
+
+      // Check if user is logged in
+      try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        
+        if (user && user.photoURL) {
+          // User is logged in - show profile and logout button
+          profilePic.src = user.photoURL;
+          profileDiv.classList.remove('hidden');
+          loginContainer.classList.add('hidden');
+        } else {
+          // No user logged in - show login button
+          profileDiv.classList.add('hidden');
+          loginContainer.classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Error checking authentication status:', error);
+        // Show login button as fallback on error
+        profileDiv.classList.add('hidden');
+        loginContainer.classList.remove('hidden');
+      }
+
+      // Add event listeners
+      loginBtn.addEventListener('click', () => {
+        window.location.href = 'login.html';
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user');
+        // After logout, show login button and hide profile
+        profileDiv.classList.add('hidden');
+        loginContainer.classList.remove('hidden');
+      });
     });
   </script>
 </body>

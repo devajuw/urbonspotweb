@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marker Details</title>
+</head>
+<body>
+    <h1>Marker Details</h1>
+    <p id="location"></p>
+    <div id="map" style="height: 400px; width: 100%;"></div> <!-- Map container -->
+
+    <script>
+        // Get the query parameters from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const lat = parseFloat(urlParams.get('lat'));
+        const lng = parseFloat(urlParams.get('lng'));
+        const name = urlParams.get('name');
+
+        // Display the location details
+        document.getElementById('location').textContent = `Name: ${name}, Latitude: ${lat}, Longitude: ${lng}`;
+
+        // Initialize the map with the marker location
+        function initMap() {
+            // Create a map centered on the marker's location
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 14,
+                center: { lat: lat, lng: lng },
+                mapTypeId: "terrain",
+            });
+
+            // Add a marker at the location
+            new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+                title: name, // Title of the marker
+                animation: google.maps.Animation.DROP, // Drop animation
+            });
+        }
+
+        // Load the Google Maps API dynamically
+        function loadGoogleMaps() {
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&callback=initMap`; // Replace YOUR_API_KEY with your actual Google Maps API key
+            script.defer = true;
+            script.async = true;
+            document.head.appendChild(script);
+        }
+
+        // Call loadGoogleMaps to initiate the API loading
+        loadGoogleMaps();
+    </script>
+</body>
+</html>

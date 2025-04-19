@@ -1,0 +1,93 @@
+[
+    {
+      "name": "Patna",
+      "description": "Patna, the capital city of Bihar, is steeped in history and is one of the oldest inhabited cities in the world. Situated along the banks of the Ganges River, it offers a mix of cultural heritage and modern growth.",
+      "images": [
+        "https://via.placeholder.com/300x200?text=Patna+1",
+        "https://via.placeholder.com/300x200?text=Patna+2",
+        "https://via.placeholder.com/300x200?text=Patna+3"
+      ]
+    },
+    {
+      "name": "Mumbai",
+      "description": "Mumbai, India's financial hub, is a bustling metropolis that combines heritage colonial architecture, skyscrapers, and coastal charm. It's home to Bollywood and vibrant street life.",
+      "images": [
+        "https://via.placeholder.com/300x200?text=Mumbai+1",
+        "https://via.placeholder.com/300x200?text=Mumbai+2",
+        "https://via.placeholder.com/300x200?text=Mumbai+3"
+      ]
+    },
+    {
+      "name": "New Delhi",
+      "description": "New Delhi, the capital of India, is known for its grand colonial architecture, political significance, and historic landmarks such as the India Gate and Red Fort.",
+      "images": [
+        "https://via.placeholder.com/300x200?text=Delhi+1",
+        "https://via.placeholder.com/300x200?text=Delhi+2",
+        "https://via.placeholder.com/300x200?text=Delhi+3"
+      ]
+    },
+    {
+      "name": "Kolkata",
+      "description": "Kolkata, formerly Calcutta, is known for its rich literary, artistic, and cultural heritage. It’s home to grand colonial architecture and a thriving arts scene.",
+      "images": [
+        "https://via.placeholder.com/300x200?text=Kolkata+1",
+        "https://via.placeholder.com/300x200?text=Kolkata+2",
+        "https://via.placeholder.com/300x200?text=Kolkata+3"
+      ]
+    },
+    {
+      "name": "Chennai",
+      "description": "Chennai, the capital of Tamil Nadu, is a coastal city known for its temples, classical music, and sandy beaches. It serves as a gateway to South Indian culture.",
+      "images": [
+        "https://via.placeholder.com/300x200?text=Chennai+1",
+        "https://via.placeholder.com/300x200?text=Chennai+2",
+        "https://via.placeholder.com/300x200?text=Chennai+3"
+      ]
+    },
+    {
+      "name": "Bengaluru",
+      "description": "Bengaluru, also known as Bangalore, is the tech capital of India. It's known for its startups, pleasant climate, and green spaces like Cubbon Park.",
+      "images": [
+        "https://via.placeholder.com/300x200?text=Bangalore+1",
+        "https://via.placeholder.com/300x200?text=Bangalore+2",
+        "https://via.placeholder.com/300x200?text=Bangalore+3"
+      ]
+    },
+    {
+      "name": "Hyderabad",
+      "description": "Hyderabad is a city of contrasts — historic monuments like Charminar coexist with IT hubs and high-tech industries. It's also famous for biryani and pearls.",
+      "images": [
+        "https://via.placeholder.com/300x200?text=Hyderabad+1",
+        "https://via.placeholder.com/300x200?text=Hyderabad+2",
+        "https://via.placeholder.com/300x200?text=Hyderabad+3"
+      ]
+    },
+    {
+      "name": "Ahmedabad",
+      "description": "Ahmedabad is a major city in Gujarat known for its textile industry, rich heritage, and the Sabarmati Ashram — home to Mahatma Gandhi.",
+      "images": [
+        "https://via.placeholder.com/300x200?text=Ahmedabad+1",
+        "https://via.placeholder.com/300x200?text=Ahmedabad+2",
+        "https://via.placeholder.com/300x200?text=Ahmedabad+3"
+      ]
+    },
+    {
+      "name": "Pune",
+      "description": "Pune is a vibrant city in Maharashtra known for its educational institutions, cultural activities, and a mix of modern and traditional Maharashtrian lifestyle.",
+      "images": [
+        "https://via.placeholder.com/300x200?text=Pune+1",
+        "https://via.placeholder.com/300x200?text=Pune+2",
+        "https://via.placeholder.com/300x200?text=Pune+3"
+      ]
+    },
+    {
+      "name": "Jaipur",
+      "description": "Jaipur, the Pink City of India, is known for its royal palaces, forts, and colorful bazaars. It's a major tourist destination and part of the Golden Triangle circuit.",
+      "images": [
+        "https://via.placeholder.com/300x200?text=Jaipur+1",
+        "https://via.placeholder.com/300x200?text=Jaipur+2",
+        "https://via.placeholder.com/300x200?text=Jaipur+3"
+      ]
+    }
+  ]
+  
