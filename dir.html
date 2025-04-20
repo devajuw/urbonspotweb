@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directions</title>
+    <link rel="stylesheet" href="stylingDir.css">
+</head>
+<body>
+    <button onclick="window.location.href='marker.html'" class="back-button">
+        ← Back to Marker
+    </button>
+    <div class="map-container">
+        <iframe id="mapFrame" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <script>
+        // Parse query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        let origin = urlParams.get('origin')?.split(',') || [];
+        const destination = urlParams.get('destination')?.split(',') || [];
+
+        // Validate coordinates
+        function isValidCoord(lat, lng) {
+            return !isNaN(lat) && !isNaN(lng) && 
+                   lat >= -90 && lat <= 90 && 
+                   lng >= -180 && lng <= 180;
+        }
+
+        // Get current location if origin is invalid
+        async function getCurrentLocation() {
+            return new Promise((resolve, reject) => {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        position => resolve(position.coords),
+                        error => reject(error)
+                    );
+                } else {
+                    reject(new Error("Geolocation not supported"));
+                }
+            });
+        }
+
+        // Main initialization
+        (async () => {
+            try {
+                let [originLat, originLng] = origin.map(Number);
+                
+                // If origin is invalid, get current location
+                if (!isValidCoord(originLat, originLng)) {
+                    const coords = await getCurrentLocation();
+                    originLat = coords.latitude;
+                    originLng = coords.longitude;
+                }
+
+                // Validate destination
+                const [destLat, destLng] = destination.map(Number);
+                if (!isValidCoord(destLat, destLng)) {
+                    throw new Error("Invalid destination coordinates");
+                }
+
+                // Build embed URL
+                const apiKey = 'AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY';
+                const embedUrl = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${originLat},${originLng}&destination=${destLat},${destLng}&mode=driving`;
+                
+                document.getElementById('mapFrame').src = embedUrl;
+                
+            } catch (error) {
+                document.body.innerHTML = `
+                    <div class="error">
+                        <h2>Error: ${error.message}</h2>
+                        <p>Please enable location access and try again.</p>
+                    </div>
+                `;
+            }
+        })();
+    </script>
+</body>
+</html>

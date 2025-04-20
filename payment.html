@@ -47,14 +47,7 @@
     <header>
         <div class="container">
             <h1>UrbonSpot</h1>
-            <!-- <nav>
-                <ul>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav> -->
-        </div>
+        
     </header>
 
     <main>
@@ -116,7 +109,7 @@
             }
         });
 
-        document.getElementById('rzp-button').onclick = function(e) {
+        document.getElementById('pay-button').onclick = function(e) {
             const bookingData = JSON.parse(sessionStorage.getItem('pendingBooking'));
             const amount = (bookingData?.fare || 1) * 100;
             
@@ -124,7 +117,7 @@
                 "key": "rzp_live_fZqJYl2cPlP44W",
                 "amount": amount,
                 "currency": "INR",
-                "name": "UrbanSpot",
+                "name": "UrbonSpot",
                 "description": "Parking Reservation",
                 "image": "https://example.com/your_logo.jpg",
                 "order_id": "",

@@ -6,6 +6,7 @@
     <title>Parking Space Details</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <style>
         body {
             margin: 0;
@@ -419,23 +420,104 @@
                 🗺️ Get Directions
             </button>
             
-            <button class="book-button pay-now-btn" onclick="processPayment()">
+            <button class="book-button pay-now-btn" id="payNow">
                 💳 Pay Now
             </button>
         </div>
     </div>
-    
+    <script>
+        // Function to process payment
+        function processPayment() {
+            // Validate form
+            const date = document.getElementById('booking-date').value;
+            const time = document.getElementById('booking-hour').value;
+            const vehicle = document.getElementById('vehicle-number').value;
+
+            if (!date || !time || !vehicle) {
+                alert('Please fill in all booking details before proceeding.');
+                return false; // Return false to indicate validation failure
+            }
+
+            // Get calculated fare
+            const fare = document.getElementById('fare-estimate').textContent;
+            const numericFare = parseInt(fare.replace('₹', '').replace(',', '').trim()) * 100; // Convert to paise
+
+            // Store booking data with actual fare
+            const bookingData = {
+                location: "Your Location Name", // Replace with actual location name
+                date,
+                time,
+                vehicle,
+                fare: numericFare,
+                lat: 0, // Replace with actual latitude
+                lng: 0, // Replace with actual longitude
+                userLat: 0, // Replace with actual user latitude
+                userLng: 0 // Replace with actual user longitude
+            };
+
+            return bookingData; // Return booking data for further processing
+        }
+
+        document.getElementById('payNow').onclick = function(e) {
+            e.preventDefault(); // Prevent default button behavior
+
+            const bookingData = processPayment(); // Call processPayment and get booking data
+
+            if (!bookingData) {
+                return; // If validation fails, exit the function
+            }
+
+            // Proceed with Razorpay payment
+            var options = {
+                "key": "rzp_live_fZqJYl2cPlP44W", // Replace with your Razorpay key ID
+                "amount": bookingData.fare, // Amount in paise
+                "currency": "INR",
+                "name": "Parking Reservation",
+                "description": "Payment for parking reservation",
+                "image": "https://example.com/your_logo.jpg", // Replace with your logo URL
+                "handler": function(response) {
+                    // Handle successful payment here
+                    const paymentData = {
+                        paymentId: response.razorpay_payment_id,
+                        vehicleNumber: bookingData.vehicle,
+                        bookingDate: bookingData.date,
+                        bookingTime: bookingData.time,
+                        amount: bookingData.fare / 100 // Convert back to main currency units
+                    };
+
+                    // Store payment data in sessionStorage
+                    sessionStorage.setItem('paymentData', JSON.stringify(paymentData));
+
+                    // Show payment confirmation on the same page
+                    window.location.href = 'confirmation.html';
+                },
+                "prefill": {
+                    "name": "Customer Name", // Replace with actual customer name
+                    "email": "customer@example.com", // Replace with actual customer email
+                    "contact": "9999999999" // Replace with actual customer contact
+                },
+                "theme": {
+                    "color": "#F37254"
+                }
+            };
+
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        };
+        </script>
+
     <!-- Back button positioned in the bottom left corner -->
     <a href="map.html" class="back-button">← Back to Map</a>
 
     <script>
         // Get location parameters from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const lat = parseFloat(urlParams.get('lat'));
-        const lng = parseFloat(urlParams.get('lng'));
-        const name = decodeURIComponent(urlParams.get('name'));
-        const userLat = urlParams.get('userLat');
-        const userLng = urlParams.get('userLng');
+      // Get location parameters from URL
+const urlParams = new URLSearchParams(window.location.search);
+const lat = parseFloat(urlParams.get('lat'));
+const lng = parseFloat(urlParams.get('lng'));
+const name = decodeURIComponent(urlParams.get('name'));
+const userLat = urlParams.get('userLat');
+const userLng = urlParams.get('userLng');
         
         let slideIndex = 0;
         let slides = [];
@@ -592,48 +674,42 @@
         }
 
         function openGoogleMaps() {
-    if (userLat && userLng) {
+    // Check if we have both user location and parking location
+    if (userLat && userLng && lat && lng) {
         // Store current URL in sessionStorage before opening maps
         sessionStorage.setItem('returnUrl', window.location.href);
         
         const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${lat},${lng}&travelmode=driving`;
-        window.open(mapsUrl, '_blank');
-    } else {
-        alert('Please get your location first by clicking "Get My Location"');
-    }
-}
+        window.open(`dir.html?origin=${userLat},${userLng}&destination=${lat},${lng}`, '_blank');
 
-        function processPayment() {
-            // Validate form
-            const date = document.getElementById('booking-date').value;
-            const time = document.getElementById('booking-hour').value;
-            const vehicle = document.getElementById('vehicle-number').value;
-            
-            if (!date || !time || !vehicle) {
-                alert('Please fill in all booking details before proceeding.');
-                return;
+    } else {
+        // Try to get user location if not available
+        if (!userLat || !userLng) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${position.coords.latitude},${position.coords.longitude}&destination=${lat},${lng}&travelmode=driving`;
+                        window.open(`dir.html?origin=${userLat},${userLng}&destination=${lat},${lng}`, '_blank');
+
+                    },
+
+
+
+
+
+                    
+                    function(error) {
+                        alert('Could not get your location. Please enable location services or manually enter your location.');
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by your browser. Please enter your location manually.');
             }
-            
-            // Get calculated fare
-            const fare = document.getElementById('fare-estimate').textContent;
-            const numericFare = parseInt(fare.replace('₹', ''));
-            
-            // Store booking data with actual fare
-            const bookingData = {
-                location: name,
-                date,
-                time,
-                vehicle,
-                fare: numericFare,
-                lat,
-                lng,
-                userLat,
-                userLng
-            };
-            
-            sessionStorage.setItem('pendingBooking', JSON.stringify(bookingData));
-            window.location.href = 'payment.html';
+        } else {
+            alert('Missing location information. Please try selecting the parking spot again.');
         }
+    }
+}  
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&callback=initMap" async defer></script>
 </body>
