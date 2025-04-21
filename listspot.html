@@ -6,23 +6,36 @@
   <link rel="stylesheet" href="CSS/listspot.css">
   <!-- Google Maps JavaScript API (for geocoding) -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY"></script>
+  <style>
+    .fb-status{
+      background: #c4bfbf;
+      
+    }
+  </style>
 </head>
 <body>
   <div class="form-container">
     <form id="parkingForm">
+      <label for="type">ADDRESS:</label>
       <input type="text" id="address" placeholder="Address" required>
+      <label for="type">PARKING TYPE:</label>
       <select id="type" required>
         <option value="">Select Type</option>
         <option value="garage">Garage</option>
         <option value="driveway">Driveway</option>
         <option value="lot">Lot</option>
       </select>
+      <label for="startTime">FROM:</label>
       <input type="time" id="startTime" required>
+      <label for="endTime">TO:</label>
       <input type="time" id="endTime" required>
-      <input type="number" id="price" placeholder="Hourly Rate" required>
+      <label for="contact">CONTACT:</label>
+      
       <input type="text" id="contact" placeholder="Contact Number" required>
+      <label for="Additional Notes">ADDITIONAL NOTES:</label>
       <textarea id="notes" placeholder="Additional Notes"></textarea>
-      <input type="file" id="photo" accept="image/*">
+      <!-- <input type="file" id="photo" accept="image/*"> -->
+      <label>DAYS:</label>
       <div>
         <label><input type="checkbox" name="days" value="Monday">Mon</label>
         <label><input type="checkbox" name="days" value="Tuesday">Tue</label>
@@ -38,7 +51,7 @@
 
  
   <div id="loading-overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);z-index:9999;">
-    <p style="color:white;">Processing...</p>
+    <p style="color:rgb(255, 255, 255);">Processing...</p>
   </div>
   <div id="custom-popup" class="popup-overlay" style="display:none;">
     <div class="popup">
@@ -48,13 +61,14 @@
       <button class="popup-button">OK</button>
     </div>
   </div>
+  <div class="fb-status">
   <div id="debug-panel"></div>
   <div id="firebase-status"></div>
   <div id="auth-status"></div>
   <div id="firestore-status"></div>
   <div id="storage-status"></div>
   <div id="form-status"></div>
-
+</div>
   <!--  main JS file as a module -->
   <script type="module" src="listspot.js"></script>
 </body>

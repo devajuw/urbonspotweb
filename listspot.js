@@ -195,37 +195,12 @@ async function geocodeAddress(address) {
     });
 }
 
-// Upload photo to Firebase Storage
-async function uploadPhoto(file, userId) {
-    if (!file) return null;
-    if (!storage) {
-        if (app) storage = getStorage(app);
-        else return null;
-    }
-    if (!ref || typeof ref !== 'function') return null;
-    try {
-        const timestamp = new Date().getTime();
-        const fileName = `parking_spots/${userId}/${timestamp}_${file.name}`;
-        const storageRef = ref(storage, fileName);
-        const uploadPromise = uploadBytes(storageRef, file);
-        const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Upload timeout')), 60000));
-        const snapshot = await Promise.race([uploadPromise, timeoutPromise]);
-        const urlPromise = getDownloadURL(snapshot.ref);
-        const urlTimeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Download URL timeout')), 20000));
-        const downloadURL = await Promise.race([urlPromise, urlTimeoutPromise]);
-        if (!downloadURL || !downloadURL.startsWith('https://')) throw new Error('Invalid download URL format');
-        return downloadURL;
-    } catch (error) {
-        return null;
-    }
-}
-
 // Form submission handler
 async function handleSubmit(event) {
     event.preventDefault();
     showLoading(true, 'Processing your submission...');
     try {
-        if (!app || !auth || !db || !storage) {
+        if (!app || !auth || !db) {
             showLoading(false);
             showPopup('Error', 'Firebase services are not ready. Please try again.', 'error');
             return;
@@ -241,23 +216,24 @@ async function handleSubmit(event) {
         const originalButtonText = submitButton.textContent;
         submitButton.disabled = true;
         submitButton.textContent = 'Submitting...';
+
         const address = document.getElementById('address').value;
         const type = document.getElementById('type').value;
         const startTime = document.getElementById('startTime').value;
         const endTime = document.getElementById('endTime').value;
-        const hourlyRate = parseFloat(document.getElementById('price').value);
         const contactNumber = document.getElementById('contact').value;
         const additionalNotes = document.getElementById('notes').value;
-        const photoFile = photoInput.files[0];
         const dayCheckboxes = document.querySelectorAll('input[name="days"]:checked');
         const days = Array.from(dayCheckboxes).map(cb => cb.value);
-        if (!address || !type || !startTime || !endTime || isNaN(hourlyRate) || !contactNumber || days.length === 0) {
+
+        if (!address || !type || !startTime || !endTime || !contactNumber || days.length === 0) {
             showPopup('Missing Information', 'Please fill in all required fields.', 'error');
             submitButton.disabled = false;
             submitButton.textContent = originalButtonText;
             showLoading(false);
             return;
         }
+
         updateLoadingMessage('Geocoding address...');
         let geoLocation;
         try {
@@ -273,38 +249,24 @@ async function handleSubmit(event) {
             submitButton.textContent = originalButtonText;
             return;
         }
-        updateLoadingMessage('Processing submission...');
-        let photoURL = null;
-        if (photoFile) {
-            try {
-                updateLoadingMessage('Uploading photo...');
-                const uploadPromise = uploadPhoto(photoFile, currentUser.uid);
-                const timeoutPromise = new Promise((resolve) => setTimeout(() => resolve(null), 90000));
-                photoURL = await Promise.race([uploadPromise, timeoutPromise]);
-            } catch (photoError) {
-                updateLoadingMessage('Continuing without photo...');
-                photoURL = null;
-            }
-        }
+
         updateLoadingMessage('Saving your listing...');
         const parkingSpotData = {
             address: geoLocation.formattedAddress || address,
             type,
             availability: { startTime, endTime, days },
-            hourlyRate,
             contactNumber,
             additionalNotes: additionalNotes || '',
-            photoURL: photoURL && photoURL.startsWith('https://') ? photoURL : null,
-            hasPhoto: !!photoURL,
             ownerUID: currentUser.uid,
             createdAt: serverTimestamp(),
             location: { latitude: geoLocation.latitude, longitude: geoLocation.longitude }
         };
+
         try {
             const parkingSpotsRef = collection(db, 'parkingSpots');
             const docRef = await addDoc(parkingSpotsRef, parkingSpotData);
             showLoading(false);
-            showPopup('Success!', 'Your parking spot has been listed successfully.', 'success', () => {
+            showPopup('Submitted', 'Your parking spot has been successfully submitted!', 'success', () => {
                 window.location.href = 'index.html';
             });
         } catch (error) {
@@ -374,18 +336,50 @@ function addDebugButtons() {
     if (!debugPanel) return;
     if (debugPanel.querySelector('button[data-test="firebase"]')) return;
     const testButton = document.createElement('button');
-    testButton.textContent = 'Test Firebase';
-    testButton.setAttribute('data-test', 'firebase');
-    testButton.style.marginTop = '10px';
-    testButton.style.marginLeft = '10px';
+    testButton.textContent = 'Test Connection';
+    testButton.style.backgroundColor = '#4CAF50';
+    testButton.style.color = 'white';
+    testButton.style.border = 'none';
+    testButton.style.padding = '10px 20px';
+    testButton.style.borderRadius = '8px';
+    testButton.style.fontSize = '16px';
+    testButton.style.cursor = 'pointer';
+    testButton.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+    testButton.style.transition = 'background-color 0.3s ease';
+    testButton.style.textAlign = 'center';
+    testButton.style.display = 'inline-block'; // Ensures no extra space around the button
+    testButton.style.margin = '0'; // Removes any default margin
+    testButton.style.outline = 'none'; // Removes focus outline
+    testButton.onmouseover = () => testButton.style.backgroundColor = '#45a049';
+    testButton.onmouseout = () => testButton.style.backgroundColor = '#4CAF50';
     testButton.onclick = testFirebase;
     debugPanel.appendChild(testButton);
-    // ... (add other debug buttons as in your original code)
 }
 
 // DOMContentLoaded logic
 document.addEventListener('DOMContentLoaded', () => {
     const parkingForm = document.getElementById('parkingForm');
+
+    parkingForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        // Show the loading overlay
+        const loadingOverlay = document.getElementById('loading-overlay');
+        loadingOverlay.style.display = 'flex';
+
+        // Simulate form processing (e.g., saving data to Firebase or server)
+        setTimeout(() => {
+            // Hide the loading overlay
+            loadingOverlay.style.display = 'none';
+
+            // Show a success message (optional)
+            alert('Parking spot listed successfully!');
+
+            // Redirect to index.html
+            window.location.href = 'index.html';
+        }, 2000); // Simulate a 2-second delay for processing
+    });
+
     if (!parkingForm) return;
     if (!window.google || !window.google.maps) {
         updateDebugStatus('form-status', 'Google Maps API not loaded', true);

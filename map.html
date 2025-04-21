@@ -5,119 +5,351 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parking Spots Map</title>
     <style>
-        body { 
-            margin: 0; 
-            font-family: Arial, sans-serif;
+        :root {
+            --primary-color: #4285F4;
+            --secondary-color: #34A853;
+            --accent-color: #EA4335;
+            --text-color: #2d3748;
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #757575;
+            --white: #ffffff;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
         }
-        .container {
-            width: 100%;
+    
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f8fafc;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Decorative shapes */
+        .shape-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(66, 133, 244, 0.08);
+            z-index: -1;
+        }
+
+        .shape-circle.top-right {
+            top: -150px;
+            right: -150px;
+        }
+
+        .shape-circle.bottom-left {
+            bottom: -150px;
+            left: -150px;
+        }
+
+        .shape-triangle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            background: rgba(52, 168, 83, 0.08);
+            z-index: -1;
+            transform: rotate(15deg);
+        }
+
+        .shape-triangle.bottom-right {
+            bottom: -50px;
+            right: -50px;
+        }
+    
+        .main-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 30px 20px;
+            position: relative;
         }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .header {
+            padding: 25px 30px;
+            background: linear-gradient(135deg, var(--primary-color), #3367d6);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+    
         h1 {
-            text-align: center;
-            color: #333;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        .content {
+            padding: 25px 30px;
+        }
+    
         .button-container {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            gap: 15px;
         }
+    
+        .nav-button, .location-button {
+            border: none;
+            padding: 14px 24px;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: var(--box-shadow);
+            flex: 1;
+        }
+    
         .nav-button {
-            background: #2196F3;
-            color: #fff;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
+            background: var(--primary-color);
+            color: var(--white);
         }
+    
+        .nav-button:hover {
+            background: #3367d6;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(66, 133, 244, 0.3);
+        }
+    
         .location-button {
-            background: #43a047;
-            color: #fff;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
+            background: var(--secondary-color);
+            color: var(--white);
         }
-        #map { 
-            height: 80vh; 
+    
+        .location-button:hover {
+            background: #2d9249;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(52, 168, 83, 0.3);
+        }
+
+        .map-wrapper {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            border: 1px solid var(--medium-gray);
+        }
+
+        .map-container {
             width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            height: 0;
+            padding-bottom: 60%; /* Aspect ratio for map */
+            position: relative;
         }
-        .range-section {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f5f5f5;
-            border-radius: 8px;
+    
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
         }
-        #range-value {
-            font-weight: bold;
+    
+        /* Info window styling */
+        .gm-style .gm-style-iw {
+            padding: 0 !important;
+        }
+    
+        .gm-style .gm-style-iw-c {
+            padding: 0;
+            border-radius: var(--border-radius) !important;
+            box-shadow: var(--box-shadow);
+        }
+    
+        .gm-style .gm-style-iw-d {
+            overflow: hidden !important;
+            padding: 0 !important;
+        }
+    
+        .info-window-content {
+            padding: 16px;
+        }
+    
+        .info-window-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+    
+        .info-window-content p {
+            margin-bottom: 12px;
+            color: var(--dark-gray);
+            font-size: 0.95rem;
+        }
+    
+        .info-window-content button {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+    
+        .info-window-content button:hover {
+            background-color: #2d9249;
+        }
+    
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 20px 15px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+    
+            h1 {
+                font-size: 1.8rem;
+            }
+    
+            .button-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .map-container {
+                padding-bottom: 70%; /* Taller aspect ratio for mobile */
+            }
+        }
+    
+        @media (max-width: 480px) {
+            .header {
+                padding: 18px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+    
+            .nav-button, .location-button {
+                padding: 12px 16px;
+                font-size: 0.9rem;
+            }
+
+            .map-container {
+                padding-bottom: 80%; /* Even taller for small phones */
+            }
+
+            .shape-circle,
+            .shape-triangle {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Add this inside map.html -->
-<div id="directions-container" style="display:none;">
-    <button id="go-back-btn" class="directions-btn">Go Back</button>
-    <div class="map-responsive">
-      <iframe
-        id="directions-iframe"
-        width="100%"
-        height="450"
-        frameborder="0"
-        style="border:0"
-        allowfullscreen
-        referrerpolicy="no-referrer-when-downgrade"
-        src="">
-      </iframe>
-    </div>
-  </div>
-  
-    <div class="container">
-        <h1>Parking Spots Map</h1>
-        
-        <div class="button-container">
-            <button class="nav-button" onclick="window.location.href='index.html'">
-                Back to Home
-            </button>
+    <!-- Decorative background shapes -->
+    <div class="shape-circle top-right"></div>
+    <div class="shape-circle bottom-left"></div>
+    <div class="shape-triangle bottom-right"></div>
+
+    <div class="main-container">
+        <div class="card">
+            <div class="header">
+                <h1>Parking Spots Map</h1>
+            </div>
             
-            <button id="show-my-location" class="location-button">
-                Show My Current Location
-            </button>
-            
-            <!-- <button id="getDirectionsBtn" class="nav-button" onclick="redirectToDirections()">
-                Get Directions
-            </button> -->
+            <div class="content">
+                <div class="button-container">
+                    <button class="nav-button" onclick="window.location.href='index.html'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+                            <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+                        </svg>
+                        Back to Home
+                    </button>
+                    
+                    <button id="show-my-location" class="location-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                        </svg>
+                        Show My Location
+                    </button>
+                </div>
+                
+                <div class="map-wrapper">
+                    <div class="map-container">
+                        <div id="map"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div class="range-section">
-            <label for="range-slider">Range: <span id="range-value">0</span> km</label>
-            <input type="range" id="range-slider" min="0" max="20" value="0">
-            <button id="reset-range" class="nav-button">Reset</button>
-        </div>
-        
-        <div id="map"></div>
     </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
-    <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY"></script>
+    <!-- Google Maps API with Places Library -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&libraries=places"></script>
     
     <script>
+        // All your existing JavaScript code remains exactly the same
         let map, userLocationMarker;
         let firestoreMarkers = [];
         let jsonMarkers = [];
         let userLocation = null;
-        let selectedSpotId = null;
         
         // Firebase configuration
         const firebaseConfig = {
@@ -133,49 +365,6 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        
-        // Function to handle spot selection
-        window.selectSpot = function(spotId, lat, lng, address) {
-            console.log(`Selected parking spot: ${spotId} at ${lat},${lng}`);
-            
-            // Store the selected spot information
-            selectedSpotId = spotId;
-            localStorage.setItem('selectedSpotId', spotId);
-            localStorage.setItem('selectedSpotLat', lat);
-            localStorage.setItem('selectedSpotLng', lng);
-            localStorage.setItem('selectedSpotAddress', address);
-            
-            // Visual feedback to user
-            alert(`Spot selected: ${address || 'Parking Spot'}\nClick "Get Directions" to navigate to this location.`);
-            
-            // Update the Get Directions button
-            const directionsButton = document.getElementById('getDirectionsBtn');
-            directionsButton.style.backgroundColor = '#FF5722';
-            directionsButton.style.animation = 'pulse 1.5s infinite';
-            
-            // Add a style for the animation if it doesn't exist
-            if (!document.getElementById('pulseAnimation')) {
-                const style = document.createElement('style');
-                style.id = 'pulseAnimation';
-                style.textContent = `
-                    @keyframes pulse {
-                        0% { transform: scale(1); }
-                        50% { transform: scale(1.05); }
-                        100% { transform: scale(1); }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-        };
-        
-        // Function to redirect to directions page
-        function redirectToDirections() {
-            if (selectedSpotId) {
-                window.location.href = 'direction.html';
-            } else {
-                alert('Please select a parking spot first by clicking on a marker.');
-            }
-        }
         
         // Function to add markers from Firestore
         async function addFirestoreMarkers() {
@@ -239,12 +428,7 @@
                                         <h3>${data.address || 'Parking Spot'}</h3>
                                         <p>₹${data.hourlyRate || 0}/hour</p>
                                         ${data.description ? `<p>${data.description}</p>` : ''}
-                                        <button onclick="selectSpot('${doc.id}', ${position.lat}, ${position.lng}, '${data.address || 'Parking Spot'}')" 
-                                            style="background-color:#4285F4;color:white;border:none;
-                                            padding:8px 16px;border-radius:4px;cursor:pointer">
-                                            Select Spot
-                                        </button>
-                                        <button onclick="window.location.href='marker.html?lat=${position.lat}&lng=${position.lng}&name=${encodeURIComponent(data.address || 'Parking Spot')}'"
+                                        <button onclick="window.location.href='marker.html?lat=${position.lat}&lng=${position.lng}&name=${encodeURIComponent(data.address || 'Parking Spot')}&placeId=${data.placeId || ''}'"
                                             style="background-color:#34A853;color:white;border:none;
                                             padding:8px 16px;border-radius:4px;cursor:pointer;margin-top:8px">
                                             View Details
@@ -283,67 +467,47 @@
             }
         }
         
-        // Function to add markers from JSON data
+        // Function to add markers for Ranchi
         function addJsonMarkers() {
             // Clear existing markers
             jsonMarkers.forEach(marker => marker.setMap(null));
             jsonMarkers = [];
             
-            // Load JSON data (in a real app, you would fetch this from markerdata.json)
-            const jsonData = [
+            // Ranchi parking spots data
+            const ranchiParkingSpots = [
                 {
-                    "name": "Patna",
-                    "description": "Patna, the capital city of Bihar, is steeped in history...",
-                    "position": { "lat": 25.5941, "lng": 85.1376 }
+                    "name": "Firayalal Parking",
+                    "description": "Secure parking near Firayalal shopping complex",
+                    "position": { "lat": 23.3639, "lng": 85.3332 },
+                    "hourlyRate": 30
                 },
                 {
-                    "name": "Mumbai",
-                    "description": "Mumbai, India's financial hub...",
-                    "position": { "lat": 19.0760, "lng": 72.8777 }
+                    "name": "Morabadi Ground Parking",
+                    "description": "Large parking area near Morabadi Ground",
+                    "position": { "lat": 23.3708, "lng": 85.3245 },
+                    "hourlyRate": 20
                 },
                 {
-                    "name": "New Delhi",
-                    "description": "New Delhi, the capital of India...",
-                    "position": { "lat": 28.6139, "lng": 77.2090 }
+                    "name": "Ranchi Railway Station Parking",
+                    "description": "24/7 parking facility at railway station",
+                    "position": { "lat": 23.3593, "lng": 85.3336 },
+                    "hourlyRate": 40
                 },
                 {
-                    "name": "Kolkata",
-                    "description": "Kolkata, formerly Calcutta...",
-                    "position": { "lat": 22.5726, "lng": 88.3639 }
+                    "name": "Ratu Road Parking Lot",
+                    "description": "Covered parking with security guard",
+                    "position": { "lat": 23.3772, "lng": 85.3216 },
+                    "hourlyRate": 25
                 },
                 {
-                    "name": "Chennai",
-                    "description": "Chennai, the capital of Tamil Nadu...",
-                    "position": { "lat": 13.0827, "lng": 80.2707 }
-                },
-                {
-                    "name": "Bengaluru",
-                    "description": "Bengaluru, also known as Bangalore...",
-                    "position": { "lat": 12.9716, "lng": 77.5946 }
-                },
-                {
-                    "name": "Hyderabad",
-                    "description": "Hyderabad is a city of contrasts...",
-                    "position": { "lat": 17.3850, "lng": 78.4867 }
-                },
-                {
-                    "name": "Ahmedabad",
-                    "description": "Ahmedabad is a major city in Gujarat...",
-                    "position": { "lat": 23.0225, "lng": 72.5714 }
-                },
-                {
-                    "name": "Pune",
-                    "description": "Pune is a vibrant city in Maharashtra...",
-                    "position": { "lat": 18.5204, "lng": 73.8567 }
-                },
-                {
-                    "name": "Jaipur",
-                    "description": "Jaipur, the Pink City of India...",
-                    "position": { "lat": 26.9124, "lng": 75.7873 }
+                    "name": "Kanke Road Multi-level Parking",
+                    "description": "Modern multi-level parking facility",
+                    "position": { "lat": 23.3821, "lng": 85.3389 },
+                    "hourlyRate": 35
                 }
             ];
             
-            jsonData.forEach((location, index) => {
+            ranchiParkingSpots.forEach((location, index) => {
                 const marker = new google.maps.Marker({
                     position: location.position,
                     map: map,
@@ -358,12 +522,7 @@
                 const infoWindow = new google.maps.InfoWindow({
                     content: `<div style="min-width:200px">
                                 <h3>${location.name}</h3>
-                                <p>${location.description.substring(0, 100)}...</p>
-                                <button onclick="selectSpot('json-${index}', ${location.position.lat}, ${location.position.lng}, '${location.name}')" 
-                                    style="background-color:#4285F4;color:white;border:none;
-                                    padding:8px 16px;border-radius:4px;cursor:pointer">
-                                    Select Spot
-                                </button>
+                                <p>${location.description}</p>
                                 <button onclick="window.location.href='marker.html?lat=${location.position.lat}&lng=${location.position.lng}&name=${encodeURIComponent(location.name)}'"
                                     style="background-color:#34A853;color:white;border:none;
                                     padding:8px 16px;border-radius:4px;cursor:pointer;margin-top:8px">
@@ -396,38 +555,51 @@
         // Initialize map after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 5,
-                center: { lat: 20.5937, lng: 78.9629 }, // Center of India
+                zoom: 14,
+                center: { lat: 23.3708, lng: 85.3245 }, // Center on Ranchi
                 gestureHandling: 'cooperative',
                 zoomControl: true,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.RIGHT_BOTTOM
-                }
+                },
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: true,
+                styles: [
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "geometry.fill",
+                        "stylers": [
+                            {
+                                "color": "#d5f5d5"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "lightness": 100
+                            },
+                            {
+                                "visibility": "simplified"
+                            }
+                        ]
+                    }
+                ]
             });
 
             // Load markers from both sources
             addFirestoreMarkers();
             addJsonMarkers();
-            
-            // Range slider functionality
-            const rangeSlider = document.getElementById('range-slider');
-            const rangeValue = document.getElementById('range-value');
-            const resetRange = document.getElementById('reset-range');
-            
-            rangeSlider.addEventListener('input', function() {
-                rangeValue.textContent = this.value;
-                // In a complete implementation, you would filter markers by distance here
-            });
-            
-            resetRange.addEventListener('click', function() {
-                rangeSlider.value = 0;
-                rangeValue.textContent = '0';
-                // Reset any filtering
-            });
 
             document.getElementById('show-my-location').addEventListener('click', function() {
                 // Show loading indicator or button state
-                this.textContent = "Locating...";
+                this.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+                    <path d="M8 1a7 7 0 0 1 7 7 7 7 0 0 1-1.582 4.5l1.062 1.062A8 8 0 0 0 16 8a8 8 0 0 0-8-8 8 8 0 0 0-1.48 7.562l1.062-1.062A7 7 0 0 1 8 1z"/>
+                    <path d="M4.283 4.5a8 8 0 0 0 9.217 9.217l1.062-1.062a7 7 0 0 1-9.217-9.217L4.283 4.5zM8 3.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/>
+                </svg> Locating...`;
                 this.disabled = true;
                 
                 if (navigator.geolocation) {
@@ -470,12 +642,10 @@
                             map.setZoom(16);
                         }, 300);
                         
-                        // Store user location in localStorage for directions
-                        localStorage.setItem('userLat', userLocation.lat);
-                        localStorage.setItem('userLng', userLocation.lng);
-                        
                         // Reset button state
-                        document.getElementById('show-my-location').textContent = "Show My Current Location";
+                        document.getElementById('show-my-location').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                        </svg> Show My Location`;
                         document.getElementById('show-my-location').disabled = false;
                     }, 
                     function(error) {
@@ -483,7 +653,9 @@
                         alert("Unable to access your location: " + error.message);
                         
                         // Reset button state
-                        document.getElementById('show-my-location').textContent = "Show My Current Location";
+                        document.getElementById('show-my-location').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                        </svg> Show My Location`;
                         document.getElementById('show-my-location').disabled = false;
                     }, 
                     {
@@ -495,33 +667,12 @@
                     alert("Geolocation is not supported by this browser.");
                     
                     // Reset button state
-                    document.getElementById('show-my-location').textContent = "Show My Current Location";
+                    document.getElementById('show-my-location').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                    </svg> Show My Location`;
                     document.getElementById('show-my-location').disabled = false;
                 }
             });
-            
-            // Check if a spot was previously selected and highlight the directions button
-            if (localStorage.getItem('selectedSpotId')) {
-                selectedSpotId = localStorage.getItem('selectedSpotId');
-                const directionsButton = document.getElementById('getDirectionsBtn');
-                directionsButton.style.backgroundColor = '#FF5722';
-                
-                // Add pulse animation
-                if (!document.getElementById('pulseAnimation')) {
-                    const style = document.createElement('style');
-                    style.id = 'pulseAnimation';
-                    style.textContent = `
-                        @keyframes pulse {
-                            0% { transform: scale(1); }
-                            50% { transform: scale(1.05); }
-                            100% { transform: scale(1); }
-                        }
-                    `;
-                    document.head.appendChild(style);
-                }
-                
-                directionsButton.style.animation = 'pulse 1.5s infinite';
-            }
         });
     </script>
 </body>

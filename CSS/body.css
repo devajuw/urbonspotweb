@@ -1,0 +1,13 @@
+body {
+    background: linear-gradient(90deg, #0f41c9,rgba(64, 68, 171, 0), #000000); /* Bluish-black gradient */
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff; /* White text for contrast */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Add spacing between elements */
+}

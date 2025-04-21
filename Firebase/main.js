@@ -1,8 +1,9 @@
 import { setupAuth } from './auth.js';
 import { signIn, register, signInWithGoogle } from './service.js';
 
-// Initialize authentication
-setupAuth();
+document.addEventListener('DOMContentLoaded', () => {
+    setupAuth();
+});
 
 // Handle login form
 const loginForm = document.getElementById('login');

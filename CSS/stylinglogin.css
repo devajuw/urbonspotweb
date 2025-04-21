@@ -1,6 +1,6 @@
 body {
-    font-family: sans-serif; /* A clean, sans-serif font like Open Sans, Roboto, or Lato is likely */
-    background-color: #c081ea; /* Approximate light purple background */
+    font-family: sans-serif; 
+    background-color: #c081ea;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,12 +14,13 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     overflow: hidden;
-    width: 800px; /* Adjust width as needed */
+    width: 80vw; 
+    /* height: 30vh; */
 }
 
 .left-section {
-    background-color: #d6d99b; /* Approximate light blue/cyan */
-    color: #212121; /* Dark grey text */
+    background: url('https://images.unsplash.com/photo-1621929747188-0b4dc28498d2?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center / cover;
+    color: #212121;
     padding: 40px;
     display: flex;
     flex-direction: column;
@@ -31,6 +32,10 @@ body {
 .logo {
     font-size: 1.2em;
     font-weight: bold;
+    color: rgb(25, 78, 125);
+    position: absolute; 
+    bottom: 20px; 
+    right: 20px;
 }
 
 .image-placeholder {

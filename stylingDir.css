@@ -1,0 +1,66 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Back Button */
+.back-button,.spot-list {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+.spot-list {
+    left: auto;
+    right: 20px; 
+}
+.back-button:hover {
+    background-color: #45a049;
+}
+
+/* Map Container */
+.map-container {
+    width: 70vw; /* Set width to 70% */
+    height: 70vh; /* Set height to 70% */
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* Map Frame */
+#mapFrame {
+    width: 100%; /* Take full width of the container */
+    height: 100%; /* Take full height of the container */
+    border: none; /* Remove default iframe border */
+    border-radius: 12px; /* Match the container's border radius */
+}
+/* Error Message */
+.error {
+    color: red;
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
+    background: #ffe6e6;
+    border: 1px solid #ffcccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

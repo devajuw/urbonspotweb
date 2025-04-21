@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UrbonSpot</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
+      font-family: Arial, sans-serif;
+    }
+
+    #splash {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgb(248, 245, 245);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    dotlottie-player {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Splash Screen with .lottie animation -->
+  <div id="splash">
+    <dotlottie-player
+      id="lottieSplash"
+      src="https://lottie.host/c858ea71-6cd4-466c-86c4-a6fab2379c1c/asrHWYmFJo.lottie"
+      background="transparent"
+      speed="1"
+      loop="false"
+      autoplay
+    ></dotlottie-player>
+  </div>
+
+  <!-- DotLottie Player Script -->
+  <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
+
+  <script>
+    const lottiePlayer = document.getElementById('lottieSplash');
+
+    // Redirect after animation completes
+    lottiePlayer.addEventListener('complete', () => {
+      window.location.href = 'login.html'; // Replace with your actual homepage URL
+    });
+  </script>
+
+</body>
+</html>
