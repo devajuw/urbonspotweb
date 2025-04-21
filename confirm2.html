@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/CSS/body.css">
+    <!-- ... (existing head content remains the same) ... -->
+    <style>
+        .confirmation-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #e1e1e1;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        p{
+            color: black;
+        }
+        .confirmation-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .confirmation-header h1 {
+            color: #8a8a8c;
+            margin-bottom: 10px;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            color: #34A853;
+            margin-bottom: 20px;
+            animation: bounce 1s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+
+        .confirmation-details {
+            background: #f1f1f1;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #010101;
+            width: 40%;
+        }
+
+        .detail-value {
+            color: #000000;
+            width: 60%;
+        }
+
+        .map-mini {
+            height: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .home-button {
+            background-color: #4285F4;
+            color: white;
+        }
+
+        .home-button:hover {
+            background-color: #3367d6;
+            transform: translateY(-2px);
+        }
+
+        .download-button {
+            background-color: #34A853;
+            color: white;
+        }
+
+        .download-button:hover {
+            background-color: #2d9249;
+            transform: translateY(-2px);
+        }
+
+        .directions-button {
+            background-color: #EA4335;
+            color: white;
+        }
+
+        .directions-button:hover {
+            background-color: #d33426;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .confirmation-container {
+                padding: 25px;
+                margin: 25px 15px;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+            }
+            
+            .detail-label, .detail-value {
+                width: 100%;
+            }
+            
+            .detail-label {
+                margin-bottom: 5px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
+    <!-- Add jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="confirmation-container">
+        <div class="confirmation-header">
+            <div class="success-icon">✓</div>
+            <h1>Booking Confirmed!</h1>
+            <p>Your parking reservation has been successfully processed.</p>
+        </div>
+        
+        <div class="confirmation-details">
+            <div class="detail-row">
+                <div class="detail-label">Payment ID:</div>
+                <div class="detail-value" id="payment-id"></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Location:</div>
+                <div class="detail-value" id="location-name"></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Vehicle Number:</div>
+                <div class="detail-value" id="vehicle-number"></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Booking Date:</div>
+                <div class="detail-value" id="booking-date"></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Booking Time:</div>
+                <div class="detail-value" id="booking-time"></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Amount Paid:</div>
+                <div class="detail-value" id="amount-paid"></div>
+            </div>
+            
+            <div class="map-mini" id="map-mini"></div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="button home-button" onclick="window.location.href='index.html'">🏠 Return Home</button>
+            <button class="button download-button" id="downloadBtn">📄 Download Receipt</button>
+            <button class="button directions-button" onclick="window.location.href='map.html'">🗺 View Map</button>
+        </div>
+    </div>
+
+    <script>
+        // Fetch payment data from sessionStorage
+        const paymentData = JSON.parse(sessionStorage.getItem('paymentData'));
+
+        console.log('Payment Data:', paymentData);
+
+        if (paymentData) {
+            document.getElementById('payment-id').textContent = paymentData.paymentId || 'N/A';
+            document.getElementById('location-name').textContent = paymentData.location || 'Nucleus Mall, Circular Road, Lalpur, Ranchi, Jharkhand-834001';
+            document.getElementById('vehicle-number').textContent = paymentData.vehicleNumber || 'N/A';
+            document.getElementById('booking-date').textContent = paymentData.bookingDate || 'N/A';
+            document.getElementById('booking-time').textContent = paymentData.bookingTime || 'N/A';
+            document.getElementById('amount-paid').textContent = paymentData.amount ? ₹${paymentData.amount} : '₹N/A';
+
+            // Initialize mini map if coordinates exist
+            if (paymentData.lat && paymentData.lng) {
+                initMiniMap(paymentData.lat, paymentData.lng);
+            }
+        } else {
+            document.querySelector('.confirmation-details').innerHTML = 
+                '<p class="error-message">No payment data found. Please complete a booking first.</p>';
+        }
+
+        // Initialize mini map
+        function initMiniMap(lat, lng) {
+            const map = new google.maps.Map(document.getElementById('map-mini'), {
+                center: { lat: parseFloat(lat), lng: parseFloat(lng) },
+                zoom: 15,
+                disableDefaultUI: true,
+                zoomControl: true
+            });
+
+            new google.maps.Marker({
+                position: { lat: parseFloat(lat), lng: parseFloat(lng) },
+                map: map,
+                icon: {
+                    url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                    scaledSize: new google.maps.Size(32, 32)
+                }
+            });
+        }
+
+        // PDF download functionality
+        document.getElementById('downloadBtn').onclick = function() {
+            if (!paymentData) {
+                alert('No payment data available to generate the receipt.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add logo or header
+            doc.setFontSize(22);
+            doc.setTextColor(40, 53, 147);
+            doc.text("UrbanSpot Parking", 105, 20, { align: "center" });
+            
+            // Add confirmation title
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text("Booking Confirmation", 105, 30, { align: "center" });
+            
+            // Add horizontal line
+            doc.setDrawColor(200, 200, 200);
+            doc.line(20, 35, 190, 35);
+            
+            // Add confirmation details in a table format
+            const data = [
+                ["Payment ID:", paymentData.paymentId || 'N/A'],
+                ["Location:", paymentData.location || 'Nucleus Mall, Ranchi'],
+                ["Vehicle Number:", paymentData.vehicleNumber || 'N/A'],
+                ["Booking Date:", paymentData.bookingDate || 'N/A'],
+                ["Booking Time:", paymentData.bookingTime || 'N/A'],
+                ["Amount Paid:", paymentData.amount ? ₹${paymentData.amount} : '₹N/A']
+            ];
+            
+            // Add table
+            doc.autoTable({
+                startY: 45,
+                head: [['Detail', 'Value']],
+                body: data,
+                theme: 'grid',
+                headStyles: {
+                    fillColor: [66, 133, 244],
+                    textColor: [255, 255, 255],
+                    fontStyle: 'bold'
+                },
+                styles: {
+                    cellPadding: 5,
+                    fontSize: 12,
+                    valign: 'middle'
+                },
+                columnStyles: {
+                    0: { cellWidth: 60, fontStyle: 'bold' },
+                    1: { cellWidth: 'auto' }
+                }
+            });
+            
+            // Add footer
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text("Thank you for using UrbanSpot Parking Services", 105, doc.internal.pageSize.height - 20, { align: "center" });
+            doc.text("Contact: support@urbanspot.com | Phone: +91 9876543210", 105, doc.internal.pageSize.height - 15, { align: "center" });
+            
+            // Add current date to footer
+            const today = new Date();
+            doc.text(Generated on: ${today.toLocaleDateString()} ${today.toLocaleTimeString()}, 105, doc.internal.pageSize.height - 10, { align: "center" });
+
+            // Save the PDF
+            doc.save(UrbanSpot_Booking_${paymentData.paymentId ? paymentData.paymentId.slice(0, 8) : 'Receipt'}.pdf);
+        };
+    </script>
+    
+    <!-- Load Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&callback=initMiniMap" async defer></script>
+</body>
+</html>
