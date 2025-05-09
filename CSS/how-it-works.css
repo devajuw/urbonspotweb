@@ -3,10 +3,11 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  background: linear-gradient(135deg, #f3f4f6, #2256bf);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   min-height: 100vh;
 }
 
