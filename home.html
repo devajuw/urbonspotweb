@@ -1,61 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>UrbonSpot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urbon Spot - Parking Made Easy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background-color: #000;
-      font-family: Arial, sans-serif;
+    body {
+      background: url('https://images.unsplash.com/photo-1590674899484-d5640e854abe?q=80&w=2667&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center / cover;
     }
 
-    #splash {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: rgb(248, 245, 245);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
+    .fade-toggle {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
     }
 
-    dotlottie-player {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
   </style>
 </head>
-<body>
 
-  <!-- Splash Screen with .lottie animation -->
-  <div id="splash">
-    <dotlottie-player
-      id="lottieSplash"
-      src="https://lottie.host/c858ea71-6cd4-466c-86c4-a6fab2379c1c/asrHWYmFJo.lottie"
-      background="transparent"
-      speed="1"
-      loop="false"
-      autoplay
-    ></dotlottie-player>
+<body class="min-h-screen flex items-center justify-center px-4 py-10">
+  <!-- Auth UI Container -->
+  <div class="absolute top-4 left-1/2 transform -translate-x-1/2 flex items-center gap-6 z-50">
+    <!-- Profile Dropdown (visible when logged in) -->
+    <div id="profile" class="relative hidden">
+      <button id="profileBtn" class="flex items-center gap-2">
+        <img id="profilePic" src="" alt="Profile Picture"
+          class="w-10 h-10 rounded-full border-2 border-white object-cover">
+        <span id="userName" class="text-white font-medium"></span>
+      </button>
+      <!-- Dropdown Menu -->
+      <div id="profileDropdown" class="absolute mt-2 w-48 rounded-md shadow-lg bg-white hidden">
+        <div class="px-4 py-2 text-gray-800 font-semibold border-b">Profile</div>
+        <button id="logoutBtn" class="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">Logout</button>
+      </div>
+    </div>
+
+    <!-- About Dropdown -->
+    <div class="relative inline-block text-left">
+      <button id="aboutBtn" class="text-white px-4 py-2">About</button>
+      <div id="aboutDropdown" class="absolute mt-2 w-48 rounded-md shadow-lg bg-white hidden">
+        <a href="how-it-works.html" class="block px-4 py-2 hover:bg-gray-100">How it Works</a>
+        <a href="contact-us.html" class="block px-4 py-2 hover:bg-gray-100">Contact Us</a>
+      </div>
+    </div>
+
+    <!-- Login button (visible when not logged in) -->
+    <div id="loginContainer">
+      <button id="loginBtn"
+        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">Login</button>
+    </div>
   </div>
 
-  <!-- DotLottie Player Script -->
-  <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
+  <div class="backdrop-blur-lg bg-white/30 p-8 md:p-12 rounded-2xl shadow-2xl max-w-6xl w-full space-y-10">
+    <!-- Top Section -->
+    <div class="flex flex-col md:flex-row gap-10">
+      <div class="w-full md:w-1/2 text-center md:text-left">
+        <h1 class="text-4xl font-bold text-white mb-4">Got a Parking Spot?</h1>
+        <p class="text-white text-lg mb-6">Start earning with it now!</p>
+        <button class="bg-white text-black px-6 py-3 rounded-full font-bold hover:bg-gray-200 transition"
+          onclick="window.location.href='listspot.html'">List My Spot</button>
+      </div>
+      <div class="w-full md:w-1/2 bg-white/90 rounded-xl p-6 shadow-lg">
+        <div class="flex justify-center gap-2 mb-4"></div>
+        <button onclick="window.location.href='map.html'"
+          class="bg-black text-white w-full py-5 rounded-lg font-bold hover:bg-gray-800">Explore Parking Spots</button>
+      </div>
+    </div>
+
+    <!-- Fare Calculator -->
+    <div class="bg-white/90 p-6 rounded-xl shadow-xl">
+      <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">🚗 Fare Calculator</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div>
+          <label class="block mb-2 font-semibold text-gray-700">Select Vehicle</label>
+          <select id="vehicleType" class="w-full border rounded-lg px-4 py-2">
+            <option value="2W">🛵 2-Wheeler</option>
+            <option value="4W_Small">🚗 Small Car (e.g., Alto, Swift, i10, Dzire)</option>
+            <option value="4W_SUV">🚙 SUV / Large Car (e.g., Creta, Fortuner, XUV700)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block mb-2 font-semibold text-gray-700">Duration</label>
+          <div class="flex gap-4">
+            <label><input type="radio" name="duration" value="hourly" checked class="mr-1">Hourly</label>
+            <label><input type="radio" name="duration" value="weekly" class="mr-1">Weekly</label>
+          </div>
+        </div>
+        <div>
+          <label class="block mb-2 font-semibold text-gray-700">Enter Hours/Weeks</label>
+          <input id="durationInput" type="number" min="1" placeholder="e.g. 2 or 7"
+            class="w-full border rounded-lg px-4 py-2">
+        </div>
+      </div>
+      <div class="mt-6 text-center">
+        <button onclick="calculateFare()"
+          class="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 font-semibold">Calculate Fare</button>
+      </div>
+      <div id="fareResult" class="mt-4 text-xl font-bold text-center text-green-700"></div>
+    </div>
+
+    <!-- Fare Chart Toggle -->
+    <div class="text-center">
+      <button onclick="toggleFareChart()"
+        class="mt-4 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold px-6 py-2 rounded-lg transition-all">
+        Fare Chart
+      </button>
+    </div>
+
+    <!-- Fare Chart -->
+    <div id="fareChart" class="fade-toggle bg-white/90 p-6 rounded-xl shadow-xl mt-4">
+      <h2 class="text-xl font-bold mb-3 text-gray-800">📋 Fare Chart</h2>
+      <div class="grid md:grid-cols-3 gap-6 text-sm text-gray-800">
+        <div>
+          <h3 class="font-bold mb-2">🛵 2-Wheelers Fare</h3>
+          <ul class="list-disc ml-5">
+            <li>Base Fare: ₹10</li>
+            <li>Hourly: ₹20/hour to ₹50</li>
+            <li>Weekly: ₹300/week to ₹500</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold mb-2">🚗 4W – Small Car</h3>
+          <p class="text-xs text-gray-600 mb-1">(e.g., Alto, Swift, Baleno, i10, Dzire)</p>
+          <ul class="list-disc ml-5">
+            <li>Base Fare: ₹20</li>
+            <li>Hourly: ₹30/hour to ₹80</li>
+            <li>Weekly: ₹500/week to ₹800</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold mb-2">🚙 4W – SUV / Large Car</h3>
+          <p class="text-xs text-gray-600 mb-1">(e.g., Creta, Fortuner, Scorpio, Safari, XUV700)</p>
+          <ul class="list-disc ml-5">
+            <li>Base Fare: ₹20</li>
+            <li>Hourly: ₹30/hour to ₹80</li>
+            <li>Weekly: ₹700/week to ₹1000</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
-    const lottiePlayer = document.getElementById('lottieSplash');
+    // Fare Calculation with range estimates
+    function calculateFare() {
+      const vehicleType = document.getElementById('vehicleType').value;
+      const durationType = document.querySelector('input[name="duration"]:checked').value;
+      const duration = parseInt(document.getElementById('durationInput').value);
 
-    // Redirect after animation completes
-    lottiePlayer.addEventListener('complete', () => {
-      window.location.href = 'login.html'; // Replace with your actual homepage URL
+      if (!duration || duration < 1) {
+        document.getElementById('fareResult').innerText = "Please enter a valid number.";
+        return;
+      }
+
+      let base = 0, minRate = 0, maxRate = 0;
+
+      if (vehicleType === "2W") {
+        base = 10;
+        if (durationType === "hourly") {
+          minRate = 20;
+          maxRate = 50;
+        } else {
+          minRate = 300;
+          maxRate = 500;
+        }
+      } else if (vehicleType === "4W_Small") {
+        base = 20;
+        if (durationType === "hourly") {
+          minRate = 30;
+          maxRate = 80;
+        } else {
+          minRate = 500;
+          maxRate = 800;
+        }
+      } else if (vehicleType === "4W_SUV") {
+        base = 20;
+        if (durationType === "hourly") {
+          minRate = 30;
+          maxRate = 80;
+        } else {
+          minRate = 700;
+          maxRate = 1000;
+        }
+      }
+
+      const minTotal = base + (minRate * duration);
+      const maxTotal = base + (maxRate * duration);
+
+      document.getElementById('fareResult').innerHTML = `
+        Estimated Fare: ₹${minTotal} - ₹${maxTotal}<br>
+        <span class="text-sm font-normal">(Base: ₹${base} + ${duration} ${durationType === 'hourly' ? 'hour(s)' : 'week(s)'} × ₹${minRate}-${maxRate})</span>
+      `;
+    }
+
+    // Toggle Fare Chart
+    function toggleFareChart() {
+      const chart = document.getElementById('fareChart');
+      chart.style.display = chart.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Dropdown and Authentication Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const profileBtn = document.getElementById('profileBtn');
+      const profileDropdown = document.getElementById('profileDropdown');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const profileDiv = document.getElementById('profile');
+      const profilePic = document.getElementById('profilePic');
+      const userName = document.getElementById('userName');
+      const loginContainer = document.getElementById('loginContainer');
+      const loginBtn = document.getElementById('loginBtn');
+      const aboutBtn = document.getElementById('aboutBtn');
+      const aboutDropdown = document.getElementById('aboutDropdown');
+
+      // Toggle profile dropdown
+      profileBtn?.addEventListener('click', () => {
+        profileDropdown.classList.toggle('hidden');
+      });
+
+      // Toggle about dropdown
+      aboutBtn.addEventListener('click', () => {
+        aboutDropdown.classList.toggle('hidden');
+      });
+
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!profileBtn?.contains(e.target) && !profileDropdown?.contains(e.target)) {
+          profileDropdown.classList.add('hidden');
+        }
+        if (!aboutBtn.contains(e.target) && !aboutDropdown.contains(e.target)) {
+          aboutDropdown.classList.add('hidden');
+        }
+      });
+
+      // Close about dropdown when a link is clicked
+      aboutDropdown.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          aboutDropdown.classList.add('hidden');
+        });
+      });
+
+      // Handle login button click
+      loginBtn.addEventListener('click', () => {
+        window.location.href = 'login.html';
+      });
+
+      // Check authentication status
+      try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.photoURL && user.displayName) {
+          // User is logged in
+          profilePic.src = user.photoURL;
+          userName.textContent = user.displayName;
+          profileDiv.classList.remove('hidden');
+          loginContainer.classList.add('hidden');
+        } else {
+          // No user logged in
+          profileDiv.classList.add('hidden');
+          loginContainer.classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Error checking authentication status:', error);
+        profileDiv.classList.add('hidden');
+        loginContainer.classList.remove('hidden');
+      }
     });
   </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const logoutBtn = document.getElementById('logoutBtn');
+    const profileDiv = document.getElementById('profile');
+    const loginContainer = document.getElementById('loginContainer');
 
+    // Handle logout button click
+    logoutBtn?.addEventListener('click', () => {
+      try {
+        // Clear user data from localStorage
+        localStorage.removeItem('user');
+        console.log('User logged out successfully.');
+
+        // Update UI: Hide profile section and show login button
+        profileDiv.classList.add('hidden');
+        loginContainer.classList.remove('hidden');
+
+        // Optionally redirect to login page
+        window.location.href = 'login.html';
+      } catch (error) {
+        console.error('Error during logout:', error);
+        alert('Failed to log out. Please try again.');
+      }
+    });
+
+    // Check authentication status on page load
+    try {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        // User is logged in: Show profile section and hide login button
+        profileDiv.classList.remove('hidden');
+        loginContainer.classList.add('hidden');
+      } else {
+        // No user logged in: Show login button and hide profile section
+        profileDiv.classList.add('hidden');
+        loginContainer.classList.remove('hidden');
+      }
+    } catch (error) {
+      console.error('Error checking authentication status:', error);
+      profileDiv.classList.add('hidden');
+      loginContainer.classList.remove('hidden');
+    }
+  });
+</script>
 </body>
+
 </html>

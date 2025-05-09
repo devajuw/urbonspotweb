@@ -31,7 +31,7 @@ export function setupAuth() {
 
     // Monitor auth state
     onAuthStateChanged(auth, (user) => {
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const currentPage = window.location.pathname.split('/').pop() || 'home.html';
         console.log('Auth state changed, user:', user ? user.uid : 'null', 'on page:', currentPage);
 
         if (user) {
@@ -42,7 +42,7 @@ export function setupAuth() {
             // No user is signed in
             profileDiv.classList.add('hidden');
             loginContainer.classList.remove('hidden');
-            if (currentPage === 'index.html') {
+            if (currentPage === 'home.html') {
                 window.location.href = 'login.html';
             }
         }

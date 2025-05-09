@@ -267,7 +267,7 @@ async function handleSubmit(event) {
             const docRef = await addDoc(parkingSpotsRef, parkingSpotData);
             showLoading(false);
             showPopup('Submitted', 'Your parking spot has been successfully submitted!', 'success', () => {
-                window.location.href = 'index.html';
+                window.location.href = 'home.html';
             });
         } catch (error) {
             showLoading(false);
@@ -375,8 +375,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Show a success message (optional)
             alert('Parking spot listed successfully!');
 
-            // Redirect to index.html
-            window.location.href = 'index.html';
+            // Redirect to 
+            window.location.href = 'home.html';
         }, 2000); // Simulate a 2-second delay for processing
     });
 

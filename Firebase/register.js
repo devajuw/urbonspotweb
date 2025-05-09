@@ -14,7 +14,7 @@ export function setupRegister() {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     console.log('Registered:', userCredential.user);
-                    window.location.href = 'index.html';
+                    window.location.href = 'home.html';
                 })
                 .catch((error) => {
                     console.error('Registration error:', error.message);
@@ -34,7 +34,7 @@ export function setupRegister() {
                         photoURL: user.photoURL
                     })); // Store user data in localStorage
                     console.log('Google register:', user);
-                    window.location.href = 'index.html';
+                    window.location.href = 'home.html';
                 })
                 .catch((error) => {
                     console.error('Google register error:', error.message);
