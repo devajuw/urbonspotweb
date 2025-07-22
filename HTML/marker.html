@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&libraries=places"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Space Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/marker.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="card left-card">
+            <div class="header">
+                <h2 id="location-name"></h2>
+            </div>
+            <div class="content">
+                <div class="content-grid">
+                    <div class="map-container">
+                        <div id="map"></div>
+                    </div>
+                    <div>
+                        <p id="location-description"></p>
+                        <div class="slideshow-container">
+                            <div id="slideshow"></div>
+                            <div class="slide-controls">
+                                <button class="slide-btn prev-btn">❮</button>
+                                <button class="slide-btn next-btn">❯</button>
+                            </div>
+                        </div>
+                        <div class="slide-nav" id="slide-nav"></div>
+                        <div class="brand-tagline">UrbonSpot - Parking Made Easy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card right-card">
+            <div class="header">
+                <h3>Parking Reservation</h3>
+            </div>
+            <div class="content">
+                <select id="vehicle-type" class="form-select" onchange="updateFare()">
+                    <option value="2W">🛵 2-Wheeler</option>
+                    <option value="4W_Small" selected>🚗 Small Car</option>
+                    <option value="4W_SUV">🚙 SUV/Large Car</option>
+                </select>
+                
+                <table class="form-table">
+                    <tr>
+                        <td>Date:</td>
+                        <td><input type="date" id="booking-date" class="form-input" required></td>
+                    </tr>
+                    <tr>
+                        <td>Time:</td>
+                        <td>
+                            <select id="booking-hour" class="form-input" required>
+                                <option value="">Select time</option>
+                                <option value="08:00">08:00 AM</option>
+                                <option value="09:00">09:00 AM</option>
+                                <option value="10:00">10:00 AM</option>
+                                <option value="11:00">11:00 AM</option>
+                                <option value="12:00">12:00 PM</option>
+                                <option value="13:00">01:00 PM</option>
+                                <option value="14:00">02:00 PM</option>
+                                <option value="15:00">03:00 PM</option>
+                                <option value="16:00">04:00 PM</option>
+                                <option value="17:00">05:00 PM</option>
+                                <option value="18:00">06:00 PM</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Duration:</td>
+                        <td>
+                            <select id="booking-duration" class="form-input" onchange="updateFare()" required>
+                                <option value="1">1 hour</option>
+                                <option value="2">2 hours</option>
+                                <option value="3">3 hours</option>
+                                <option value="4">4 hours</option>
+                                <option value="5">5 hours</option>
+                                <option value="6">6 hours</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Vehicle No:</td>
+                        <td><input type="text" id="vehicle-number" class="form-input" placeholder="DL 01 AB 1234" required></td>
+                    </tr>
+                    <tr class="fare-row">
+                        <td>Fare:</td>
+                        <td><span class="fare-amount" id="fare-estimate">₹60</span></td>
+                    </tr>
+                </table>
+                
+                <div class="fare-details">
+                    <h4>Fare Breakdown</h4>
+                    <div class="fare-item">
+                        <span>Base Price:</span>
+                        <span id="base-price">₹20</span>
+                    </div>
+                    <div class="fare-item">
+                        <span>Hourly Rate:</span>
+                        <span id="hourly-rate">₹10/hr</span>
+                    </div>
+                    <div class="fare-item total-fare">
+                        <span>Total:</span>
+                        <span id="total-fare">₹60</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="getDirections()">🗺️ Get Directions</button>
+                <button class="btn btn-secondary" id="payNow">💳 Pay Now</button>
+            </div>
+        </div>
+    </div>
+    
+    <button onclick="window.location.href='map.html'" class="back-button">← Back</button>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const lat = parseFloat(urlParams.get('lat'));
+        const lng = parseFloat(urlParams.get('lng'));
+        const name = decodeURIComponent(urlParams.get('name'));
+        const userLat = urlParams.get('userLat');
+        const userLng = urlParams.get('userLng');
+    
+        const pricing = {
+            '2W': { base: 1, hourly: 0 },
+            '4W_Small': { base: 20, hourly: 10 },
+            '4W_SUV': { base: 30, hourly: 15 }
+        };
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('booking-date').valueAsDate = new Date();
+            document.getElementById('location-name').textContent = name;
+            document.getElementById('location-description').textContent = 
+                `Secure parking in ${name} with 24/7 surveillance and easy access.`;
+            
+            updateFare();
+            initMap();
+            initSlideshow();
+        });
+
+        function initSlideshow() {
+            const slideshow = document.getElementById('slideshow');
+            const slideNav = document.getElementById('slide-nav');
+            const images = [
+                'https://via.placeholder.com/400x200?text=Parking+Facility',
+                'https://via.placeholder.com/400x200?text=Secure+Area',
+                'https://via.placeholder.com/400x200?text=24/7+Access'
+            ];
+            
+            images.forEach((src, i) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.className = i === 0 ? 'slide active' : 'slide';
+                img.alt = `Parking ${i + 1}`;
+                slideshow.appendChild(img);
+                
+                const dot = document.createElement('div');
+                dot.className = i === 0 ? 'slide-dot active' : 'slide-dot';
+                dot.onclick = () => showSlide(i);
+                slideNav.appendChild(dot);
+            });
+            
+            document.querySelector('.prev-btn').onclick = () => showSlide(slideIndex - 1);
+            document.querySelector('.next-btn').onclick = () => showSlide(slideIndex + 1);
+            setInterval(() => showSlide(slideIndex + 1), 4000);
+        }
+
+        let slideIndex = 0;
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slide-dot');
+            
+            if (index >= slides.length) index = 0;
+            if (index < 0) index = slides.length - 1;
+            
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+                dots[i].classList.toggle('active', i === index);
+            });
+            slideIndex = index;
+        }
+    
+        function updateFare() {
+            const vehicleType = document.getElementById('vehicle-type').value;
+            const duration = parseInt(document.getElementById('booking-duration').value) || 1;
+            const rates = pricing[vehicleType] || pricing['4W_Small'];
+            const total = rates.base + (rates.hourly * duration);
+            
+            document.getElementById('base-price').textContent = `₹${rates.base}`;
+            document.getElementById('hourly-rate').textContent = `₹${rates.hourly}/hr`;
+            document.getElementById('fare-estimate').textContent = `₹${total}`;
+            document.getElementById('total-fare').textContent = `₹${total}`;
+        }
+
+        function getDirections() {
+            const details = { lat, lng, name, userLat, userLng };
+            sessionStorage.setItem('parkingDetails', JSON.stringify(details));
+
+            if (userLat && userLng) {
+                window.location.href = `dir.html?origin=${userLat},${userLng}&destination=${lat},${lng}`;
+            } else {
+                navigator.geolocation?.getCurrentPosition(
+                    pos => {
+                        const { latitude: lat, longitude: lng } = pos.coords;
+                        window.location.href = `dir.html?origin=${lat},${lng}&destination=${lat},${lng}`;
+                    },
+                    () => alert('Location access needed for directions')
+                );
+            }
+        }
+
+        function processPayment() {
+            const date = document.getElementById('booking-date').value;
+            const time = document.getElementById('booking-hour').value;
+            const vehicle = document.getElementById('vehicle-number').value;
+
+            if (!date || !time || !vehicle) {
+                alert('Please fill all fields');
+                return false;
+            }
+
+            const fare = parseInt(document.getElementById('fare-estimate').textContent.replace('₹', '')) * 100;
+            return { location: name, date, time, vehicle, fare, lat, lng, userLat, userLng };
+        }
+
+        document.getElementById('payNow').onclick = function(e) {
+            e.preventDefault();
+            const bookingData = processPayment();
+            if (!bookingData) return;
+
+            const options = {
+                "key": "rzp_live_fZqJYl2cPlP44W",
+                "amount": bookingData.fare,
+                "currency": "INR",
+                "name": "Parking Reservation",
+                "description": "Payment for parking",
+                "handler": function(response) {
+                    sessionStorage.setItem('paymentData', JSON.stringify({
+                        paymentId: response.razorpay_payment_id,
+                        vehicleNumber: bookingData.vehicle,
+                        bookingDate: bookingData.date,
+                        bookingTime: bookingData.time,
+                        amount: bookingData.fare / 100
+                    }));
+                    window.location.href = 'confirm.html';
+                },
+                "prefill": {
+                    "name": "Customer",
+                    "email": "customer@example.com",
+                    "contact": "9999999999"
+                },
+                "theme": { "color": "#4285F4" }
+            };
+
+            new Razorpay(options).open();
+        };
+    
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: { lat, lng },
+                mapTypeId: 'roadmap'
+            });
+
+            new google.maps.Marker({
+                position: { lat, lng },
+                map: map,
+                title: name
+            });
+
+            if (userLat && userLng) {
+                new google.maps.Marker({
+                    position: { lat: parseFloat(userLat), lng: parseFloat(userLng) },
+                    map: map,
+                    title: "Your Location",
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                });
+
+                const bounds = new google.maps.LatLngBounds();
+                bounds.extend({ lat, lng });
+                bounds.extend({ lat: parseFloat(userLat), lng: parseFloat(userLng) });
+                map.fitBounds(bounds);
+            }
+        }
+    </script>
+</body>
+</html>
