@@ -41,7 +41,7 @@ function spawnMarkers() {
         // Add an event listener to the marker to open marker.html with location details
         google.maps.event.addListener(marker, 'click', function() {
             const markerData = markerLocations[i];
-            window.location.href = `marker.html?lat=${markerData.lat}&lng=${markerData.lng}&name=${encodeURIComponent(markerData.name)}`;
+            window.location.href = `/HTML/marker.html?lat=${markerData.lat}&lng=${markerData.lng}&name=${encodeURIComponent(markerData.name)}`;
         });
     }
 }

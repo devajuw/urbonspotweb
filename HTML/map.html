@@ -313,7 +313,7 @@
             
             <div class="content">
                 <div class="button-container">
-                    <button class="nav-button" onclick="window.location.href='home.html'">
+                    <button class="nav-button" onclick="window.location.href='/HTML/home.html'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
                             <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
                         </svg>
@@ -428,7 +428,7 @@
                                         <h3>${data.address || 'Parking Spot'}</h3>
                                         <p>₹${data.hourlyRate || 0}/hour</p>
                                         ${data.description ? `<p>${data.description}</p>` : ''}
-                                        <button onclick="window.location.href='marker.html?lat=${position.lat}&lng=${position.lng}&name=${encodeURIComponent(data.address || 'Parking Spot')}&placeId=${data.placeId || ''}'"
+                                        <button onclick="window.location.href='/HTML/marker.html?lat=${position.lat}&lng=${position.lng}&name=${encodeURIComponent(data.address || 'Parking Spot')}&placeId=${data.placeId || ''}'"
                                             style="background-color:#34A853;color:white;border:none;
                                             padding:8px 16px;border-radius:4px;cursor:pointer;margin-top:8px">
                                             View Details
@@ -523,7 +523,7 @@
                     content: `<div style="min-width:200px">
                                 <h3>${location.name}</h3>
                                 <p>${location.description}</p>
-                                <button onclick="window.location.href='marker.html?lat=${location.position.lat}&lng=${location.position.lng}&name=${encodeURIComponent(location.name)}'"
+                                <button onclick="window.location.href='/HTML/marker.html?lat=${location.position.lat}&lng=${location.position.lng}&name=${encodeURIComponent(location.name)}'"
                                     style="background-color:#34A853;color:white;border:none;
                                     padding:8px 16px;border-radius:4px;cursor:pointer;margin-top:8px">
                                     View Details

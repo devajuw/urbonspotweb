@@ -1,9 +1,5 @@
-# UrbonSpot - Parking Management System
+# UrbonSpot - Parking Made Easy
 
-## 📁 Project Structure
-
-```
-urbonspotweb/
 ├── HTML/                    # All HTML pages
 │   ├── index.html          # Landing page
 │   ├── home.html           # Home dashboard
@@ -30,7 +26,6 @@ urbonspotweb/
 ├── JS/                     # JavaScript files
 │   ├── listspot.js         # List spot functionality
 │   ├── photos.js           # Photo handling
-│   ├── index.js            # Landing page scripts
 │   ├── script.js           # General scripts
 │   └── fare.js             # Fare calculation
 │
@@ -56,16 +51,10 @@ urbonspotweb/
     ├── handleRazorpayWebhook.js
     ├── package.json
     └── package-lock.json
+── index.js            # Landing page scripts
 ```
 
-## 🎯 Key Improvements Made
 
-### ✅ Code Optimization
-- **Reduced marker.html from 1023 to 292 lines** (71% reduction)
-- Extracted CSS to separate `marker.css` file
-- Removed redundant decorative elements
-- Streamlined JavaScript functions
-- Consolidated styling variables
 
 ### ✅ File Organization
 - **HTML files** → `HTML/` folder
@@ -74,30 +63,10 @@ urbonspotweb/
 - **CSS files** → `CSS/` folder (already organized)
 - **Firebase code** → `Firebase/` folder (already organized)
 
-### ✅ Path Updates
-All file references have been updated for the new structure:
-- CSS references: `href="../CSS/filename.css"`
-- JS references: `src="../JS/filename.js"`
-- Firebase references: `src="../Firebase/filename.js"`
-- HTML cross-references remain relative within the HTML/ folder
-
 ## 🚀 Getting Started
-
-1. Open any HTML file from the `HTML/` folder
-2. Main entry points:
-   - `HTML/index.html` - Landing page
-   - `HTML/home.html` - Main dashboard
-   - `HTML/map.html` - Interactive map
-
-## 🔧 Development
-
-- All styling is now modular and organized
-- Firebase configuration is centralized
-- JavaScript modules are properly separated
-- Assets are organized in dedicated folder
+- Open the `index.html` from main folder
 
 ## 📱 Features
-
 - **Parking Spot Management** - List and find parking spots
 - **Interactive Maps** - Google Maps integration
 - **Booking System** - Reserve parking spots
@@ -106,5 +75,3 @@ All file references have been updated for the new structure:
 - **Responsive Design** - Mobile-first approach
 
 ---
-
-*Project structure optimized for maintainability and scalability.* 

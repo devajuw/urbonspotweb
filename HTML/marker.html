@@ -116,7 +116,7 @@
         </div>
     </div>
     
-    <button onclick="window.location.href='map.html'" class="back-button">← Back</button>
+    <button onclick="window.location.href='/HTML/map.html'" class="back-button">← Back</button>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
@@ -202,12 +202,12 @@
             sessionStorage.setItem('parkingDetails', JSON.stringify(details));
 
             if (userLat && userLng) {
-                window.location.href = `dir.html?origin=${userLat},${userLng}&destination=${lat},${lng}`;
+                window.location.href = `/HTML/dir.html?origin=${userLat},${userLng}&destination=${lat},${lng}`;
             } else {
                 navigator.geolocation?.getCurrentPosition(
                     pos => {
                         const { latitude: lat, longitude: lng } = pos.coords;
-                        window.location.href = `dir.html?origin=${lat},${lng}&destination=${lat},${lng}`;
+                        window.location.href = `/HTML/dir.html?origin=${lat},${lng}&destination=${lat},${lng}`;
                     },
                     () => alert('Location access needed for directions')
                 );
@@ -247,7 +247,7 @@
                         bookingTime: bookingData.time,
                         amount: bookingData.fare / 100
                     }));
-                    window.location.href = 'confirm.html';
+                    window.location.href = '/HTML/confirm.html';
                 },
                 "prefill": {
                     "name": "Customer",

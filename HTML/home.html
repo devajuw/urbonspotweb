@@ -49,8 +49,8 @@
     <div class="relative inline-block text-left">
       <button id="aboutBtn" class="text-white px-4 py-2">About</button>
       <div id="aboutDropdown" class="absolute mt-2 w-48 rounded-md shadow-lg bg-white hidden">
-        <a href="how-it-works.html" class="block px-4 py-2 hover:bg-gray-100">How it Works</a>
-        <a href="contact-us.html" class="block px-4 py-2 hover:bg-gray-100">Contact Us</a>
+        <a href="/HTML/how-it-works.html" class="block px-4 py-2 hover:bg-gray-100">How it Works</a>
+        <a href="/HTML/contact-us.html" class="block px-4 py-2 hover:bg-gray-100">Contact Us</a>
       </div>
     </div>
 
@@ -68,11 +68,11 @@
         <h1 class="text-4xl font-bold text-white mb-4">Got a Parking Spot?</h1>
         <p class="text-white text-lg mb-6">Start earning with it now!</p>
         <button class="bg-white text-black px-6 py-3 rounded-full font-bold hover:bg-gray-200 transition"
-          onclick="window.location.href='listspot.html'">List My Spot</button>
+          onclick="window.location.href='/HTML/listspot.html'">List My Spot</button>
       </div>
       <div class="w-full md:w-1/2 bg-white/90 rounded-xl p-6 shadow-lg">
         <div class="flex justify-center gap-2 mb-4"></div>
-        <button onclick="window.location.href='map.html'"
+        <button onclick="window.location.href='/HTML/map.html'"
           class="bg-black text-white w-full py-5 rounded-lg font-bold hover:bg-gray-800">Explore Parking Spots</button>
       </div>
     </div>
@@ -251,7 +251,7 @@
 
       // Handle login button click
       loginBtn.addEventListener('click', () => {
-        window.location.href = 'login.html';
+        window.location.href = '/HTML/login.html';
       });
 
       // Check authentication status
@@ -293,7 +293,7 @@
         loginContainer.classList.remove('hidden');
 
         // Optionally redirect to login page
-        window.location.href = 'login.html';
+        window.location.href = '/HTML/login.html';
       } catch (error) {
         console.error('Error during logout:', error);
         alert('Failed to log out. Please try again.');

@@ -22,7 +22,7 @@ export function setupAuth() {
             // Update UI after logout
             profileDiv.classList.add('hidden'); // Hide profile section
             loginContainer.classList.remove('hidden'); // Show login button
-            window.location.href = 'login.html'; // Redirect to login page
+            window.location.href = '/HTML/login.html'; // Redirect to login page
         } catch (error) {
             console.error('Logout error:', error.message);
             alert('Error logging out: ' + error.message);
@@ -31,7 +31,7 @@ export function setupAuth() {
 
     // Monitor auth state
     onAuthStateChanged(auth, (user) => {
-        const currentPage = window.location.pathname.split('/').pop() || 'home.html';
+        const currentPage = window.location.pathname.split('/').pop() || '/HTML/home.html';
         console.log('Auth state changed, user:', user ? user.uid : 'null', 'on page:', currentPage);
 
         if (user) {
@@ -42,8 +42,8 @@ export function setupAuth() {
             // No user is signed in
             profileDiv.classList.add('hidden');
             loginContainer.classList.remove('hidden');
-            if (currentPage === 'home.html') {
-                window.location.href = 'login.html';
+            if (currentPage === '/HTML/home.html') {
+                window.location.href = '/HTML/login.html';
             }
         }
     });
