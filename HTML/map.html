@@ -1,3 +1,7 @@
+<!--
+  IMPORTANT: Do NOT hardcode API keys in this file.
+  Use window.FIREBASE_API_KEY and window.GOOGLE_MAPS_API_KEY, injected from a secure source or server-side.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -342,24 +346,18 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
     <!-- Google Maps API with Places Library -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=" + (window.GOOGLE_MAPS_API_KEY || '') + "&libraries=places"></script>
     
     <script>
-        // All your existing JavaScript code remains exactly the same
-        let map, userLocationMarker;
-        let firestoreMarkers = [];
-        let jsonMarkers = [];
-        let userLocation = null;
-        
-        // Firebase configuration
+        // Firebase config is now loaded from window variables for security
         const firebaseConfig = {
-            apiKey: "AIzaSyB5rM-Z_YxL6mpPb5qX3S7A-ykBshAA_Ro",
-            authDomain: "dev-85f8d.firebaseapp.com",
-            projectId: "dev-85f8d",
-            storageBucket: "dev-85f8d.appspot.com",
-            messagingSenderId: "884673937857",
-            appId: "1:884673937857:web:97943fdefae91ccfe36f40",
-            measurementId: "G-4CR2VG9QTK"
+            apiKey: window.FIREBASE_API_KEY,
+            authDomain: window.FIREBASE_AUTH_DOMAIN,
+            projectId: window.FIREBASE_PROJECT_ID,
+            storageBucket: window.FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: window.FIREBASE_MESSAGING_SENDER_ID,
+            appId: window.FIREBASE_APP_ID,
+            measurementId: window.FIREBASE_MEASUREMENT_ID
         };
         
         // Initialize Firebase

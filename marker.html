@@ -282,7 +282,7 @@
         if (!bookingData) return;
 
         const options = {
-          key: "rzp_live_fZqJYl2cPlP44W",
+          key: window.RAZORPAY_KEY_ID,
           amount: bookingData.fare,
           currency: "INR",
           name: "Parking Reservation",
