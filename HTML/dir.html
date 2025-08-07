@@ -15,7 +15,7 @@
     <div class="map-container">
         <iframe id="mapFrame" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
-    <script>
+    <script type="module">
         // Parse query parameters
         const urlParams = new URLSearchParams(window.location.search);
         let origin = urlParams.get('origin')?.split(',') || [];
@@ -61,7 +61,7 @@
                 }
 
                 // Build embed URL
-                const apiKey = 'AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY';
+                const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
                 const embedUrl = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${originLat},${originLng}&destination=${destLat},${destLng}&mode=driving`;
                 
                 document.getElementById('mapFrame').src = embedUrl;

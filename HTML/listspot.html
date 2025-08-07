@@ -5,7 +5,11 @@
   <title>List Your Parking Spot</title>
       <link rel="stylesheet" href="../CSS/listspot.css">
   <!-- Google Maps JavaScript API (for geocoding) -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY"></script>
+  <script type="module">
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`;
+    document.head.appendChild(script);
+  </script>
   <style>
     .fb-status{
       background: #c4bfbf;

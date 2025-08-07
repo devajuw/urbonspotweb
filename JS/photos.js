@@ -86,7 +86,7 @@ function initSlideshow(photos) {
 function showDefaultImage() {
   const slideshow = document.getElementById("slideshow");
   slideshow.innerHTML = `
-        <img src="https://maps.googleapis.com/maps/api/streetview?size=600x300&location=${lat},${lng}&fov=90&key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY" 
+        <img src="https://maps.googleapis.com/maps/api/streetview?size=600x300&location=${lat},${lng}&fov=90&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}" 
              class="slide active" 
              alt="Parking spot street view">
     `;

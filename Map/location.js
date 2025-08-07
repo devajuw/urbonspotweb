@@ -73,7 +73,7 @@ function initMapFromScript(userLocation) {
 // Load the Google Maps API dynamically
 function loadGoogleMaps() {
     const script = document.createElement('script');
-    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAlUjF8he099BRUCD-B5_6QGuyRDUNESFY&callback=initMap";
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&callback=initMap&loading=async`;
     script.defer = true;
     script.async = true;
     document.head.appendChild(script);
