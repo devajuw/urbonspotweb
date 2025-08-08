@@ -50,17 +50,18 @@
     ></dotlottie-player>
   </div>
 
-  <!-- Inject API keys and config here. In production, use server-side injection or a build tool to set these values securely. -->
-  <script>
-    window.FIREBASE_API_KEY = "YOUR_FIREBASE_API_KEY";
-    window.FIREBASE_AUTH_DOMAIN = "YOUR_FIREBASE_AUTH_DOMAIN";
-    window.FIREBASE_PROJECT_ID = "YOUR_FIREBASE_PROJECT_ID";
-    window.FIREBASE_STORAGE_BUCKET = "YOUR_FIREBASE_STORAGE_BUCKET";
-    window.FIREBASE_MESSAGING_SENDER_ID = "YOUR_FIREBASE_MESSAGING_SENDER_ID";
-    window.FIREBASE_APP_ID = "YOUR_FIREBASE_APP_ID";
-    window.FIREBASE_MEASUREMENT_ID = "YOUR_FIREBASE_MEASUREMENT_ID";
-    window.GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY";
-    window.RAZORPAY_KEY_ID = "YOUR_RAZORPAY_KEY_ID";
+  <!-- Environment variables are now loaded via Vite -->
+  <script type="module">
+    // Make Vite environment variables available globally for compatibility
+    window.FIREBASE_API_KEY = import.meta.env.VITE_FIREBASE_API_KEY;
+    window.FIREBASE_AUTH_DOMAIN = import.meta.env.VITE_FIREBASE_AUTH_DOMAIN;
+    window.FIREBASE_PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID;
+    window.FIREBASE_STORAGE_BUCKET = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
+    window.FIREBASE_MESSAGING_SENDER_ID = import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID;
+    window.FIREBASE_APP_ID = import.meta.env.VITE_FIREBASE_APP_ID;
+    window.FIREBASE_MEASUREMENT_ID = import.meta.env.VITE_FIREBASE_MEASUREMENT_ID;
+    window.GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+    window.RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID;
   </script>
 
   <!-- DotLottie Player Script -->

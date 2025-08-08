@@ -5,89 +5,150 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us</title>
   <style>
-    body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(135deg, #f3f4f6, #4317c6);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-}
+    :root {
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(148, 163, 184, 0.35);
+      --title: #0f172a;
+      --text: #475569;
+      --muted: #64748b;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+    }
 
+    body {
+      font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(66,133,244,0.15), transparent),
+        radial-gradient(1200px 600px at 90% 90%, rgba(52,168,83,0.15), transparent),
+        linear-gradient(120deg, #0b1220, #0f172a 40%, #0b1220);
+    }
 
     .contact-container {
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      max-width: 500px;
-      width: 90%;
-      text-align: center;
+      background: var(--card-bg);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      padding: 36px 32px;
+      width: min(640px, 92vw);
+      overflow: hidden; /* prevent any child overflow */
     }
 
     h1 {
-      font-size: 28px;
-      color: #333;
-      margin-bottom: 20px;
+      font-size: clamp(1.4rem, 2vw + 1rem, 2rem);
+      color: var(--title);
+      margin: 0 0 10px;
     }
 
-    p {
-      font-size: 16px;
-      color: #4b5563;
-      margin-bottom: 20px;
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin: 0 0 22px;
     }
 
     form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 14px;
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 6px;
     }
 
     input, textarea {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 14px;
-      color: #374151;
-      background: #f9fafb;
+      box-sizing: border-box; /* ensure it never exceeds container */
+      padding: 12px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      color: #0f172a;
+      background: #ffffff;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      overflow-wrap: break-word; /* prevent long content overflow */
+      word-break: break-word;
+      max-width: 100%;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical; /* only vertical resize so it won't stretch horizontally */
     }
 
     input:focus, textarea:focus {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
+    }
+
+    .actions {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 6px;
     }
 
     button {
-      background-color: #3b82f6;
+      background-color: var(--primary);
       color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
+      border: 1px solid rgba(255,255,255,0.6);
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: transform 0.08s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
     }
 
     button:hover {
-      background-color: #2563eb;
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+    }
+
+    button:active { transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      form { grid-template-columns: 1fr; }
+      .actions { justify-content: stretch; }
+      .actions button { width: 100%; }
     }
   </style>
 </head>
 <body>
   <div class="contact-container">
     <h1>Contact Us</h1>
-    <p>We'd love to hear from you! Please fill out the form below and we'll get back to you as soon as possible.</p>
+    <p class="subtitle">We'd love to hear from you. Fill out the form and we'll get back to you shortly.</p>
     <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea placeholder="Your Message" rows="5" required></textarea>
-      <button type="submit">Send Message</button>
+      <div>
+        <label for="name">Your name</label>
+        <input id="name" type="text" placeholder="Jane Doe" required>
+      </div>
+      <div>
+        <label for="email">Your email</label>
+        <input id="email" type="email" placeholder="jane@example.com" required>
+      </div>
+      <div class="full">
+        <label for="message">Your message</label>
+        <textarea id="message" placeholder="How can we help you?" rows="6" required></textarea>
+      </div>
+      <div class="actions">
+        <button type="submit">Send Message</button>
+      </div>
     </form>
   </div>
 </body>

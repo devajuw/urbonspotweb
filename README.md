@@ -72,46 +72,9 @@
 - **User Authentication** - Firebase auth
 - **Responsive Design** - Mobile-first approach
 
-## Environment Variables and Security
 
-1. Copy `.env.example` to `.env` and fill in your Firebase credentials.
-2. **Never commit your `.env` file or any secrets to git.**
-3. The `.gitignore` already includes `.env` to prevent accidental commits.
 
-Example:
-```
-VITE_FIREBASE_API_KEY=your_firebase_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_firebase_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
-VITE_FIREBASE_APP_ID=your_firebase_app_id
-VITE_FIREBASE_MEASUREMENT_ID=your_firebase_measurement_id
-```
 
-If you have already committed secrets, rotate them immediately in your Firebase console.
-
-## Securing API Keys in HTML
-
-For HTML files (like map.html), do NOT hardcode API keys. Instead, inject them using a <script> block that sets window.FIREBASE_API_KEY and window.GOOGLE_MAPS_API_KEY. In production, use server-side injection or a build tool to set these values securely.
-
-Example:
-<script>
-  window.FIREBASE_API_KEY = "YOUR_FIREBASE_API_KEY";
-  window.GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY";
-</script>
-
-Never commit real API keys to your repository.
-
-## Razorpay API Key Security
-
-- **Frontend:**
-  - Do NOT hardcode your Razorpay public key in HTML or JS files.
-  - Inject it using a <script> block that sets window.RAZORPAY_KEY_ID, just like other API keys.
-  - Example:
-    <script>
-      window.RAZORPAY_KEY_ID = "YOUR_RAZORPAY_KEY_ID";
-    </script>
 
 - **Backend (Cloud Functions):**
   - Store your Razorpay secret using Firebase Functions config:

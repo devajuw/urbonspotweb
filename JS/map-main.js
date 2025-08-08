@@ -15,9 +15,25 @@ const firebaseConfig = {
     measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// Initialize Firebase (guard against duplicate init)
+if (!firebase.apps || firebase.apps.length === 0) {
+    firebase.initializeApp(firebaseConfig);
+}
 const db = firebase.firestore();
+
+// Ensure we have read permission: try anonymous auth when rules require auth
+async function signInIfNeeded() {
+    try {
+        if (!firebase.auth) return null; // auth not loaded
+        const auth = firebase.auth();
+        if (auth.currentUser) return auth.currentUser;
+        const result = await auth.signInAnonymously();
+        return result.user || null;
+    } catch (error) {
+        console.warn('Anonymous sign-in failed or not permitted:', error);
+        return null;
+    }
+}
 
 // Function to add markers from Firestore
 async function addFirestoreMarkers() {
@@ -259,7 +275,10 @@ function initMap() {
     });
 
     // Load markers from both sources
-    addFirestoreMarkers();
+    // Attempt anon sign-in first (if required by Firestore rules), then fetch
+    signInIfNeeded().finally(() => {
+        addFirestoreMarkers();
+    });
     addJsonMarkers();
 
     document.getElementById('show-my-location').addEventListener('click', function() {
