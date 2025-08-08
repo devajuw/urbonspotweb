@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "dev-85f8d"
+    "default": import.meta.env.VITE_FIREBASE_PROJECT_ID;
   }
 }
