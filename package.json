@@ -3,7 +3,7 @@
     "dotenv": "^17.2.1"
   },
   "devDependencies": {
-    "vite": "^7.0.6"
+    "vite": "^7.0.8"
   },
   "scripts": {
     "dev": "vite",
