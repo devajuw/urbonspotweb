@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/HTML/(.*)", "destination": "/HTML/$1" },
+    { "source": "/:path*", "destination": "/:path*" }
+  ],
+  "buildCommand": "echo 'Static site'",
+  "outputDirectory": ".",
+  "public": true
+}
