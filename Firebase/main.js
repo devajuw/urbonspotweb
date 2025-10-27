@@ -1,5 +1,5 @@
-import { setupAuth } from './auth.js';
-import { signIn, register, signInWithGoogle } from './service.js';
+import { setupAuth } from '../FireBase/auth.js';
+import { signIn, register, signInWithGoogle } from '../FireBase/service.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     setupAuth();

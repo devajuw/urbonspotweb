@@ -3,7 +3,20 @@
     { "source": "/HTML/(.*)", "destination": "/HTML/$1" },
     { "source": "/:path*", "destination": "/:path*" }
   ],
-  "buildCommand": "echo 'Static site'",
-  "outputDirectory": ".",
-  "public": true
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "dist",
+  "public": true,
+  "env": {
+    "VITE_FIREBASE_API_KEY": "AIzaSyAMhpH8mR24n7nMCq6opcbQZbHykSGJ8fw",
+    "VITE_FIREBASE_AUTH_DOMAIN": "dev-85f8d.firebaseapp.com",
+    "VITE_FIREBASE_PROJECT_ID": "dev-85f8d",
+    "VITE_FIREBASE_STORAGE_BUCKET": "dev-85f8d.firebasestorage.app",
+    "VITE_FIREBASE_MESSAGING_SENDER_ID": "884673937857",
+    "VITE_FIREBASE_APP_ID": "1:884673937857:web:97943fdefae91ccfe36f40",
+    "VITE_FIREBASE_MEASUREMENT_ID": "G-4CR2VG9QTK",
+    "VITE_GOOGLE_MAPS_API_KEY": "AIzaSyBngobUoTZkOKxioTiwH4WuCTELMcXl25o",
+    "VITE_RAZORPAY_KEY": "rzp_live_SCBwZl1tDH7VA7",
+    "VITE_CLERK_PUBLISHABLE_KEY": "pk_test_c21vb3RoLXRlcnJhcGluLTAuY2xlcmsuYWNjb3VudHMuZGV2JA"
+  }
 }
+
