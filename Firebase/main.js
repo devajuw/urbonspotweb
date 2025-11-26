@@ -16,7 +16,7 @@ if (loginForm) {
         try {
             await signIn(email, password);
             alert('Login successful!');
-            window.location.href = '/HTML/home.html';
+            window.location.href = '/HTML/login_success.html';
         } catch (error) {
             alert('Login failed: ' + error.message);
             console.error('Login error:', error.message);
@@ -37,7 +37,7 @@ if (registerForm) {
         try {
             const user = await register(name, email, password);
             console.log('Registration successful for UID:', user.uid);
-            window.location.href = '/HTML/home.html';
+            window.location.href = '/HTML/login_success.html';
         } catch (error) {
             alert('Registration failed: ' + error.message);
             console.error('Registration error:', error.message);
@@ -59,7 +59,7 @@ if (googleLoginBtn) {
                 photoURL: user.photoURL
             })); // Store user data in localStorage
             console.log('Google login successful for UID:', user.uid);
-            window.location.href = '/HTML/home.html';
+            window.location.href = '/HTML/login_success.html';
         } catch (error) {
             alert('Google login failed: ' + error.message);
             console.error('Google login error:', error.message);
@@ -72,7 +72,7 @@ if (googleSignupBtn) {
         try {
             const user = await signInWithGoogle();
             console.log('Google signup successful for UID:', user.uid);
-            window.location.href = '/HTML/home.html';
+            window.location.href = '/HTML/login_success.html';
         } catch (error) {
             alert('Google signup failed: ' + error.message);
             console.error('Google signup error:', error.message);

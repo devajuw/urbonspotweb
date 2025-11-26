@@ -19,7 +19,10 @@ export default defineConfig({
         contact: 'HTML/contact-us.html',
         howitworks: 'HTML/how-it-works.html',
         confirm: 'HTML/confirm.html',
-        dir: 'HTML/dir.html'
+        dir: 'HTML/dir.html',
+        terms: 'HTML/terms.html',
+        privacy: 'HTML/privacy_policy.html',
+        loginsuccess: 'HTML/login_success.html'
       }
     }
   }
