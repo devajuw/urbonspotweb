@@ -14,11 +14,11 @@
   if (existing) return;
 
   const script = document.createElement('script');
-  script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places&v=weekly`;
-  script.async = true;
-  script.defer = true;
-  script.onerror = () => {
-    console.error('Failed to load Google Maps JS API on marker page. Check API key restrictions and network.');
+  script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places,marker&v=weekly&loading=async`;
+++script.async+=+true;
+++script.defer+=+true;
+++script.onerror+=+()+=>+{
+++++console.error('Failed to load Google Maps JS API on marker page. Check API key restrictions and network.');
   };
   script.onload = () => {
     if (!(window.google && window.google.maps)) {

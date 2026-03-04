@@ -4,7 +4,7 @@ let markers = []; // Array to store 10 markers
 // Function to initialize the map and set the default center to India
 function initMap() {
     // Initialize the map centered on India
-    map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), { mapId: "DEMO_MAP_ID",
         zoom: 5, // Initial zoom level for India
         center: { lat: 20.5937, lng: 78.9629 }, // Coordinates of India (centered on India)
         mapTypeId: "terrain",
@@ -29,11 +29,10 @@ function spawnMarkers() {
 
     // Loop through the markerLocations array and place markers on the map
     for (let i = 0; i < markerLocations.length; i++) {
-        const marker = new google.maps.Marker({
+        const marker = new google.maps.marker.AdvancedMarkerElement({
             position: markerLocations[i],
             map: map,
-            label: markerLocations[i].label,
-            animation: google.maps.Animation.DROP, // Adds drop animation for markers
+            label: markerLocations[i].label, // Adds drop animation for markers
             draggable: false, // Make markers undraggable (fixed in place)
         });
         markers.push(marker); // Store the marker in the markers array
@@ -53,7 +52,7 @@ function initMapFromScript(userLocation) {
     map.setZoom(15); // Zoom in for a closer view
 
     // Create a marker for the user's location
-    const userMarker = new google.maps.Marker({
+    const userMarker = new google.maps.marker.AdvancedMarkerElement({
         position: userLocation,
         map: map,
         label: {
@@ -61,8 +60,7 @@ function initMapFromScript(userLocation) {
             color: "white",
             fontSize: "24px",
             fontWeight: "bold",
-        },
-        animation: google.maps.Animation.DROP, // Drop animation for the marker
+        }, // Drop animation for the marker
         draggable: false, // The user's marker is not draggable
     });
  
@@ -73,11 +71,12 @@ function initMapFromScript(userLocation) {
 // Load the Google Maps API dynamically
 function loadGoogleMaps() {
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&callback=initMap&loading=async`;
-    script.defer = true;
-    script.async = true;
-    document.head.appendChild(script);
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&callback=initMap&loading=async&libraries=places,marker`;
+++++script.defer+=+true;
+++++script.async+=+true;
+++++document.head.appendChild(script);
 }
 
-// Call loadGoogleMaps to initiate the API loading
+//+Call+loadGoogleMaps+to+initiate+the+API+loading
 loadGoogleMaps();
+&libraries=marker

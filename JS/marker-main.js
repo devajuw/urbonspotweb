@@ -175,24 +175,24 @@ document.getElementById("payNow").onclick = function (e) {
 };
 
 function initMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
+  const map = new google.maps.Map(document.getElementById("map"), { mapId: "DEMO_MAP_ID",
     zoom: 15,
     center: { lat, lng },
     mapTypeId: "roadmap",
   });
 
-  new google.maps.Marker({
+  new google.maps.marker.AdvancedMarkerElement({
     position: { lat, lng },
     map: map,
     title: name,
   });
 
   if (userLat && userLng) {
-    new google.maps.Marker({
+    new google.maps.marker.AdvancedMarkerElement({
       position: { lat: parseFloat(userLat), lng: parseFloat(userLng) },
       map: map,
       title: "Your Location",
-      icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+      content: (() => { const img = document.createElement('img'); img.src = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"; img.width = 40; img.height = 40; return img; })(),
     });
 
     const bounds = new google.maps.LatLngBounds();

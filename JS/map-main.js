@@ -39,7 +39,7 @@ async function signInIfNeeded() {
 async function addFirestoreMarkers() {
     try {
         // Clear existing markers
-        firestoreMarkers.forEach(marker => marker.setMap(null));
+        firestoreMarkers.forEach(marker => marker.map = null);
         firestoreMarkers = [];
         
         console.log("Fetching parking spots from Firestore...");
@@ -81,15 +81,11 @@ async function addFirestoreMarkers() {
                 console.log(`Creating marker at position:`, position);
                 
                 // Create marker
-                const marker = new google.maps.Marker({
+                const marker = new google.maps.marker.AdvancedMarkerElement({
                     position: position,
                     map: map,
                     title: data.address || 'Parking Spot',
-                    icon: {
-                        url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                        scaledSize: new google.maps.Size(40, 40)
-                    },
-                    animation: google.maps.Animation.DROP
+                    content: (() => { const img = document.createElement('img'); img.src = "http://maps.google.com/mapfiles/ms/icons/red-dot.png"; img.width = 40; img.height = 40; return img; })()
                 });
                 
                 // Create info window with parking spot details
@@ -142,7 +138,7 @@ async function addFirestoreMarkers() {
 // Function to add markers for Ranchi
 function addJsonMarkers() {
     // Clear existing markers
-    jsonMarkers.forEach(marker => marker.setMap(null));
+    jsonMarkers.forEach(marker => marker.map = null);
     jsonMarkers = [];
     
     // Ranchi parking spots data
@@ -180,14 +176,11 @@ function addJsonMarkers() {
     ];
     
     ranchiParkingSpots.forEach((location, index) => {
-        const marker = new google.maps.Marker({
+        const marker = new google.maps.marker.AdvancedMarkerElement({
             position: location.position,
             map: map,
             title: location.name,
-            icon: {
-                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                scaledSize: new google.maps.Size(40, 40)
-            }
+            content: (() => { const img = document.createElement('img'); img.src = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"; img.width = 40; img.height = 40; return img; })()
         });
         
         // Create info window
@@ -238,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), { mapId: "DEMO_MAP_ID",
         zoom: 14,
         center: { lat: 23.3708, lng: 85.3245 }, // Center on Ranchi
         gestureHandling: 'cooperative',
@@ -298,17 +291,13 @@ function initMap() {
                 
                 console.log("User location found:", userLocation);
                 
-                if (userLocationMarker) userLocationMarker.setMap(null);
+                if (userLocationMarker) userLocationMarker.map = null;
                 
-                userLocationMarker = new google.maps.Marker({
+                userLocationMarker = new google.maps.marker.AdvancedMarkerElement({
                     position: userLocation,
                     map: map,
                     title: "Your Current Location",
-                    icon: { 
-                        url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
-                        scaledSize: new google.maps.Size(40, 40)
-                    },
-                    animation: google.maps.Animation.DROP
+                    content: (() => { const img = document.createElement('img'); img.src = "http://maps.google.com/mapfiles/ms/icons/green-dot.png"; img.width = 40; img.height = 40; return img; })()
                 });
                 
                 // Create info window for user location
