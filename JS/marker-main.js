@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
   ).textContent = `Secure parking in ${name} with 24/7 surveillance and easy access.`;
 
   updateFare();
-  initSlideshow();
+  hideSlideshow(); // Image slideshow disabled - was failing to render
   
   // Wait for Google Maps to load
   const checkGoogleMaps = () => {
@@ -33,48 +33,11 @@ document.addEventListener("DOMContentLoaded", function () {
   checkGoogleMaps();
 });
 
-function initSlideshow() {
-  const slideshow = document.getElementById("slideshow");
+function hideSlideshow() {
+  const slideshowContainer = document.querySelector(".slideshow-container");
   const slideNav = document.getElementById("slide-nav");
-  const images = [
-    "https://via.placeholder.com/400x200?text=Parking+Facility",
-    "https://via.placeholder.com/400x200?text=Secure+Area",
-    "https://via.placeholder.com/400x200?text=24/7+Access",
-  ];
-
-  images.forEach((src, i) => {
-    const img = document.createElement("img");
-    img.src = src;
-    img.className = i === 0 ? "slide active" : "slide";
-    img.alt = `Parking ${i + 1}`;
-    slideshow.appendChild(img);
-
-    const dot = document.createElement("div");
-    dot.className = i === 0 ? "slide-dot active" : "slide-dot";
-    dot.onclick = () => showSlide(i);
-    slideNav.appendChild(dot);
-  });
-
-  document.querySelector(".prev-btn").onclick = () =>
-    showSlide(slideIndex - 1);
-  document.querySelector(".next-btn").onclick = () =>
-    showSlide(slideIndex + 1);
-  setInterval(() => showSlide(slideIndex + 1), 4000);
-}
-
-let slideIndex = 0;
-function showSlide(index) {
-  const slides = document.querySelectorAll(".slide");
-  const dots = document.querySelectorAll(".slide-dot");
-
-  if (index >= slides.length) index = 0;
-  if (index < 0) index = slides.length - 1;
-
-  slides.forEach((slide, i) => {
-    slide.classList.toggle("active", i === index);
-    dots[i].classList.toggle("active", i === index);
-  });
-  slideIndex = index;
+  if (slideshowContainer) slideshowContainer.style.display = 'none';
+  if (slideNav) slideNav.style.display = 'none';
 }
 
 function updateFare() {
@@ -205,4 +168,3 @@ function initMap() {
 // Make functions global for onclick handlers
 window.updateFare = updateFare;
 window.getDirections = getDirections;
-window.showSlide = showSlide;

@@ -3,22 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>List Your Parking Spot</title>
-      <link rel="stylesheet" href="../CSS/listspot.css">
+  <link rel="stylesheet" href="../CSS/listspot.css">
   <!-- Google Maps JavaScript API (for geocoding) -->
-  <script type="module">
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&loading=async&libraries=places,marker`;
-++++document.head.appendChild(script);
-++</script>
-++<style>
-++++.fb-status{
-++++++background:+#c4bfbf;
-++++++
-++++}
-++</style>
+  <script type="module" src="../JS/map-loader.js"></script>
+  <style>
+    .fb-status{
+      background: #c4bfbf;
+    }
+  </style>
 </head>
 <body>
-++<div+class=&libraries=marker"form-container">
+  <div class="form-container">
     <form id="parkingForm">
       <label for="type">ADDRESS:</label>
       <input type="text" id="address" placeholder="Address" required>
@@ -34,7 +29,6 @@
       <label for="endTime">TO:</label>
       <input type="time" id="endTime" required>
       <label for="contact">CONTACT:</label>
-      
       <input type="text" id="contact" placeholder="Contact Number" required>
       <label for="Additional Notes">ADDITIONAL NOTES:</label>
       <textarea id="notes" placeholder="Additional Notes"></textarea>
@@ -53,10 +47,10 @@
     </form>
   </div>
 
- 
   <div id="loading-overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);z-index:9999;">
     <p style="color:rgb(255, 255, 255);">Processing...</p>
   </div>
+  
   <div id="custom-popup" class="popup-overlay" style="display:none;">
     <div class="popup">
       <span class="popup-close" style="cursor:pointer;">&times;</span>
@@ -64,8 +58,9 @@
       <p class="popup-message"></p>
       <button class="popup-button">OK</button>
     </div>
- 
-  <!--  main JS file as a module -->
-      <script type="module" src="../JS/listspot.js"></script>
+  </div>
+
+  <!-- main JS file as a module -->
+  <script type="module" src="../JS/listspot.js"></script>
 </body>
 </html>

@@ -72,11 +72,10 @@ function initMapFromScript(userLocation) {
 function loadGoogleMaps() {
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&callback=initMap&loading=async&libraries=places,marker`;
-++++script.defer+=+true;
-++++script.async+=+true;
-++++document.head.appendChild(script);
+    script.defer = true;
+    script.async = true;
+    document.head.appendChild(script);
 }
 
-//+Call+loadGoogleMaps+to+initiate+the+API+loading
+// Call loadGoogleMaps to initiate the API loading
 loadGoogleMaps();
-&libraries=marker

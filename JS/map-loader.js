@@ -1,6 +1,6 @@
 // JS/map-loader.js
 (() => {
-  if (typeof window !== 'undefined' && window.google && window.google.maps) {
+  if (typeof window !== 'undefined' && window.google && window.google.maps) {   
     // Already loaded
     return;
   }
@@ -16,10 +16,10 @@
 
   const script = document.createElement('script');
   script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places,marker&v=weekly&loading=async`;
-++script.async+=+true;
-++script.defer+=+true;
-++script.onerror+=+()+=>+{
-++++console.error('Failed to load Google Maps JS API. Check API key restrictions and network.');
+  script.async = true;
+  script.defer = true;
+  script.onerror = () => {
+    console.error('Failed to load Google Maps JS API. Check API key restrictions and network.');
   };
   script.onload = () => {
     if (!(window.google && window.google.maps)) {
